@@ -1,0 +1,123 @@
+
+130|root@PD5:/data/system/users/0 # cd /
+root@PD5:/ # 
+root@PD5:/ # 
+root@PD5:/ # 
+age             <item name="com.android.launcher3.LauncherProvider" />        <
+/system/bin/sh: syntax error: 'newline' unexpected
+1|root@PD5:/ # 
+1|root@PD5:/ # 
+1|root@PD5:/ # 
+1|root@PD5:/ # dumpsys package com.android.launcher3
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        d95e116 com.android.launcher3/.Launcher filter 51b72fe
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.HOME"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.MONKEY"
+          AutoVerify=false
+      android.intent.action.APPLICATION_PREFERENCES:
+        69ba97 com.android.launcher3/.SettingsActivity filter 82d8a5f
+          Action: "android.intent.action.APPLICATION_PREFERENCES"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      com.android.launcher.action.INSTALL_SHORTCUT:
+        ba8a484 com.android.launcher3/.InstallShortcutReceiver filter 58be880
+          Action: "com.android.launcher.action.INSTALL_SHORTCUT"
+          AutoVerify=false
+      android.appwidget.action.APPWIDGET_HOST_RESTORED:
+        b06746d com.android.launcher3/.AppWidgetsRestoredReceiver filter 692eb9
+          Action: "android.appwidget.action.APPWIDGET_HOST_RESTORED"
+          AutoVerify=false
+
+Permissions:
+  Permission [com.android.launcher3.permission.READ_SETTINGS] (286f8a2):
+    sourcePackage=com.android.launcher3
+    uid=10056 gids=null type=0 prot=normal
+    perm=Permission{2856933 com.android.launcher3.permission.READ_SETTINGS}
+    packageSetting=PackageSetting{94d84f0 com.android.launcher3/10056}
+  Permission [com.android.launcher3.permission.WRITE_SETTINGS] (622ea69):
+    sourcePackage=com.android.launcher3
+    uid=10056 gids=null type=0 prot=signature|privileged
+    perm=Permission{67ffcee com.android.launcher3.permission.WRITE_SETTINGS}
+    packageSetting=PackageSetting{94d84f0 com.android.launcher3/10056}
+
+Registered ContentProviders:
+  com.android.launcher3/.LauncherProvider:
+    Provider{1a3658f com.android.launcher3/.LauncherProvider}
+
+ContentProvider Authorities:
+  [com.android.launcher3.settings]:
+    Provider{1a3658f com.android.launcher3/.LauncherProvider}
+      applicationInfo=ApplicationInfo{71e001c com.android.launcher3}
+
+Key Set Manager:
+  [com.android.launcher3]
+      Signing KeySets: 3
+
+Packages:
+  Package [com.android.launcher3] (94d84f0):
+    userId=10056
+    pkg=Package{d76c425 com.android.launcher3}
+    codePath=/system/app/Launcher3
+    resourcePath=/system/app/Launcher3
+    legacyNativeLibraryDir=/system/app/Launcher3/lib
+    primaryCpuAbi=null
+    secondaryCpuAbi=null
+    versionCode=25 minSdk=21 targetSdk=23
+    versionName=7.1.1
+    splits=[base]
+    apkSigningVersion=2
+    applicationInfo=ApplicationInfo{71e001c com.android.launcher3}
+    flags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION ]
+    dataDir=/data/user/0/com.android.launcher3
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    timeStamp=2008-12-31 10:00:00
+    firstInstallTime=2008-12-31 10:00:00
+    lastUpdateTime=2008-12-31 10:00:00
+    signatures=PackageSignatures{4f2f9fa [a55014af]}
+    installPermissionsFixed=true installStatus=1
+    pkgFlags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION ]
+    declared permissions:
+      com.android.launcher3.permission.READ_SETTINGS: prot=normal, INSTALLED
+      com.android.launcher3.permission.WRITE_SETTINGS: prot=signature|privileged, INSTALLED
+      com.android.launcher.permission.INSTALL_SHORTCUT: prot=dangerous
+    requested permissions:
+      com.android.launcher.permission.READ_SETTINGS
+      com.android.launcher.permission.WRITE_SETTINGS
+      com.android.launcher3.permission.READ_SETTINGS
+      com.android.launcher3.permission.WRITE_SETTINGS
+      android.permission.CALL_PHONE
+      android.permission.SET_WALLPAPER
+      android.permission.SET_WALLPAPER_HINTS
+      android.permission.BIND_APPWIDGET
+      android.permission.READ_EXTERNAL_STORAGE
+      android.permission.RECEIVE_BOOT_COMPLETED
+    install permissions:
+      com.android.launcher3.permission.READ_SETTINGS: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      com.android.launcher3.permission.WRITE_SETTINGS: granted=true
+      android.permission.SET_WALLPAPER: granted=true
+      android.permission.SET_WALLPAPER_HINTS: granted=true
+    User 0: ceDataInode=419457 installed=true hidden=false suspended=false stopped=false notLaunched=false enabled=2
+      lastDisabledCaller: net.soti.mobicontrol.peoplenet
+      runtime permissions:
+
+
+Dexopt state:
+  [com.android.launcher3]
+    Instruction Set: arm
+      path: /system/app/Launcher3/Launcher3.apk
+      status: /data/dalvik-cache/arm/system@app@Launcher3@Launcher3.apk@classes.dex [compilation_filter=verify-at-runtim
+      e, status=kOatUpToDate]
+
+
+Compiler stats:
+  [com.android.launcher3]
+    (No recorded stats)
+root@PD5:/ # 

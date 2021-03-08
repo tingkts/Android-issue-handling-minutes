@@ -1,0 +1,210 @@
+
+130|root@PD5:/ # dumpsys package PMobile.Android
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        5fe6f09 PMobile.Android/com.domain.pmobile.mainactivity filter b60c781
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.HOME"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      android.speech.tts.TextToSpeech.Engine.ACTION_TTS_DATA_INSTALLED:
+        d20350e PMobile.Android/com.alk.copilot.tts.TtsInstalledReceiver filter bc4ca8b
+          Action: "android.speech.tts.TextToSpeech.Engine.ACTION_TTS_DATA_INSTALLED"
+          AutoVerify=false
+      android.intent.action.DOWNLOAD_COMPLETE:
+        db50b2f PMobile.Android/md565ee29ec1d02db442ac33eed41d625a7.DownloadBroadcastReceiver filter b02c768
+          Action: "android.intent.action.DOWNLOAD_COMPLETE"
+          AutoVerify=false
+
+Service Resolver Table:
+  Non-Data Actions:
+      com.peoplenet.icapBridge.NavigoBind:
+        4d8453c PMobile.Android/md500c9021ea133fa184c8c7c23f58c1c06.NavigoMessenger filter de42f7c
+          Action: "com.peoplenet.icapBridge.NavigoBind"
+          AutoVerify=false
+      com.peoplenet.icapBridge.PreClearBind:
+        d95f2c5 PMobile.Android/md5bd1f37350194dd484d46bc8e83e16388.DrivewyzeMessenger filter eb5849
+          Action: "com.peoplenet.icapBridge.PreClearBind"
+          AutoVerify=false
+      pnet.icap.FoundationService_ip:
+        22e941a PMobile.Android/md5768ac60f6af2a50f56a2df45936fb6cf.FoundationService_IP filter a91054e
+          Action: "pnet.icap.FoundationService_ip"
+          AutoVerify=false
+      com.peoplenet.icapBridge.TailoredSolutionsBind:
+        5112b4b PMobile.Android/md585509c8cbf007c344ba021ab3ba35096.TailoredSolutionsMessenger filter f7c285a
+          Action: "com.peoplenet.icapBridge.TailoredSolutionsBind"
+          AutoVerify=false
+      com.peoplenet.icapBridge.RoutePowerBind:
+        a827928 PMobile.Android/md52c98ad19620ccc748df21a08c87b49c6.RoutePowerMessenger filter 6883005
+          Action: "com.peoplenet.icapBridge.RoutePowerBind"
+          AutoVerify=false
+      pnet.icap.FoundationService:
+        767f641 PMobile.Android/pnet.icap.FoundationService filter 7b1366f
+          Action: "pnet.icap.FoundationService"
+          AutoVerify=false
+
+Registered ContentProviders:
+  PMobile.Android/mono.MonoRuntimeProvider_1:
+    Provider{b91d7e6 PMobile.Android/mono.MonoRuntimeProvider_1}
+  PMobile.Android/mono.MonoRuntimeProvider:
+    Provider{ec53127 PMobile.Android/mono.MonoRuntimeProvider}
+  PMobile.Android/android.support.v4.content.FileProvider:
+    Provider{a19ffd4 PMobile.Android/android.support.v4.content.FileProvider}
+
+ContentProvider Authorities:
+  [PMobile.Android.provider]:
+    Provider{a19ffd4 PMobile.Android/android.support.v4.content.FileProvider}
+      applicationInfo=ApplicationInfo{afcb57d PMobile.Android}
+  [PMobile.Android.mono.MonoRuntimeProvider.__mono_init__]:
+    Provider{ec53127 PMobile.Android/mono.MonoRuntimeProvider}
+      applicationInfo=ApplicationInfo{afcb57d PMobile.Android}
+  [PMobile.Android.mono.MonoRuntimeProvider_1.__mono_init__]:
+    Provider{b91d7e6 PMobile.Android/mono.MonoRuntimeProvider_1}
+      applicationInfo=ApplicationInfo{afcb57d PMobile.Android}
+
+Key Set Manager:
+  [PMobile.Android]
+      Signing KeySets: 1
+
+Packages:
+  Package [PMobile.Android] (8938c72):
+    userId=10068
+    pkg=Package{dc9b8c3 PMobile.Android}
+    codePath=/data/app/PMobile.Android-1
+    resourcePath=/data/app/PMobile.Android-1
+    legacyNativeLibraryDir=/data/app/PMobile.Android-1/lib
+    primaryCpuAbi=armeabi-v7a
+    secondaryCpuAbi=null
+    versionCode=25026 minSdk=17 targetSdk=28
+    versionName=4.25.0.25026
+    splits=[base]
+    apkSigningVersion=2
+    applicationInfo=ApplicationInfo{afcb57d PMobile.Android}
+    flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP LARGE_HEAP ]
+    privateFlags=[ RESIZEABLE_ACTIVITIES ]
+    dataDir=/data/user/0/PMobile.Android
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    usesOptionalLibraries:
+      com.symbol.emdk
+    timeStamp=2020-09-16 11:41:14
+    firstInstallTime=2019-04-17 21:32:37
+    lastUpdateTime=2020-09-16 11:41:39
+    signatures=PackageSignatures{f014540 [6d85ea0]}
+    installPermissionsFixed=true installStatus=1
+    pkgFlags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP LARGE_HEAP ]
+    requested permissions:
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.ACCESS_WIFI_STATE
+      android.permission.REBOOT
+      android.permission.SET_TIME_ZONE
+      android.permission.SET_TIME
+      android.permission.READ_EXTERNAL_STORAGE
+      android.permission.WRITE_APN_SETTINGS
+      android.permission.WRITE_SETTINGS
+      android.permission.WRITE_EXTERNAL_STORAGE
+      android.permission.CAMERA
+      android.permission.INTERNET
+      android.permission.RECORD_AUDIO
+      android.permission.WAKE_LOCK
+      android.permission.NFC
+      android.permission.BLUETOOTH_ADMIN
+      android.permission.BLUETOOTH
+      android.permission.CHANGE_WIFI_STATE
+      android.permission.ACCESS_COARSE_LOCATION
+      android.permission.ACCESS_FINE_LOCATION
+      android.permission.BIND_VPN_SERVICE
+      android.permission.RECEIVE_BOOT_COMPLETED
+      android.permission.EXPAND_STATUS_BAR
+      android.permission.GET_TASKS
+      android.permission.REMOVE_TASKS
+      android.permission.REORDER_TASKS
+      android.permission.INSTALL_PACKAGES
+      android.permission.REQUEST_INSTALL_PACKAGES
+      android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+      android.permission.ACCESS_MOCK_LOCATION
+      android.permission.READ_PHONE_STATE
+      android.permission.READ_CONTACTS
+      android.permission.VIBRATE
+      com.android.vending.CHECK_LICENSE
+      com.android.vending.BILLING
+      android.permission.DELETE_PACKAGES
+      android.permission.LOCATION_HARDWARE
+      com.symbol.emdk.permission.EMDK
+      android.permission.READ_LOGS
+      android.permission.DISABLE_KEYGUARD
+      android.permission.SYSTEM_ALERT_WINDOW
+      android.permission.KILL_BACKGROUND_PROCESSES
+      android.permission.FOREGROUND_SERVICE
+      android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+      android.permission.DUMP
+    install permissions:
+      android.permission.WRITE_SETTINGS: granted=true
+      android.permission.ACCESS_MOCK_LOCATION: granted=true
+      android.permission.SYSTEM_ALERT_WINDOW: granted=true
+      android.permission.INSTALL_PACKAGES: granted=true
+      android.permission.NFC: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      android.permission.SET_TIME_ZONE: granted=true
+      android.permission.REMOVE_TASKS: granted=true
+      android.permission.EXPAND_STATUS_BAR: granted=true
+      android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS: granted=true
+      android.permission.BLUETOOTH: granted=true
+      android.permission.GET_TASKS: granted=true
+      android.permission.INTERNET: granted=true
+      com.android.vending.CHECK_LICENSE: granted=true
+      android.permission.REORDER_TASKS: granted=true
+      com.android.vending.BILLING: granted=true
+      android.permission.BLUETOOTH_ADMIN: granted=true
+      android.permission.BIND_VPN_SERVICE: granted=true
+      android.permission.ACCESS_LOCATION_EXTRA_COMMANDS: granted=true
+      android.permission.SET_TIME: granted=true
+      android.permission.WRITE_APN_SETTINGS: granted=true
+      android.permission.CHANGE_WIFI_STATE: granted=true
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+      android.permission.DISABLE_KEYGUARD: granted=true
+      android.permission.READ_LOGS: granted=true
+      android.permission.KILL_BACKGROUND_PROCESSES: granted=true
+      android.permission.REBOOT: granted=true
+      android.permission.VIBRATE: granted=true
+      android.permission.ACCESS_WIFI_STATE: granted=true
+      android.permission.REQUEST_INSTALL_PACKAGES: granted=true
+      android.permission.DUMP: granted=true
+      android.permission.LOCATION_HARDWARE: granted=true
+      android.permission.WAKE_LOCK: granted=true
+      android.permission.DELETE_PACKAGES: granted=true
+    User 0: ceDataInode=419463 installed=true hidden=false suspended=false stopped=false notLaunched=false enabled=0
+      gids=[3002, 3003, 3001, 1007]
+      runtime permissions:
+        android.permission.ACCESS_FINE_LOCATION: granted=true
+        android.permission.READ_EXTERNAL_STORAGE: granted=true
+        android.permission.ACCESS_COARSE_LOCATION: granted=true
+        android.permission.READ_PHONE_STATE: granted=true
+        android.permission.CAMERA: granted=true
+        android.permission.WRITE_EXTERNAL_STORAGE: granted=true
+        android.permission.RECORD_AUDIO: granted=true
+        android.permission.READ_CONTACTS: granted=true
+      disabledComponents:
+        md52c98ad19620ccc748df21a08c87b49c6.RoutePowerMessenger
+        md5bd1f37350194dd484d46bc8e83e16388.DrivewyzeMessenger
+      enabledComponents:
+        md51a317cfa4d388ee976c504b421233f37.RoutePowerMessenger
+        md55363399ba99fe6c9e2be22b7a0ca9dd9.DrivewyzeMessenger
+
+
+Dexopt state:
+  [PMobile.Android]
+    Instruction Set: arm
+      path: /data/app/PMobile.Android-1/base.apk
+      status: /data/app/PMobile.Android-1/oat/arm/base.odex [compilation_filter=verify-at-runtime, status=kOatUpToDate]
+
+
+Compiler stats:
+  [PMobile.Android]
+     base.apk - 9779
+     PMobile.apk - 7034
+root@PD5:/ # 

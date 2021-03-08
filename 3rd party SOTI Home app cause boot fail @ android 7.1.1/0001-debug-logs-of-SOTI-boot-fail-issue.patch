@@ -1,0 +1,922 @@
+From c095d848b51aa7a4d945fe69d7580eeffd792c89 Mon Sep 17 00:00:00 2001
+From: ting <ting@gmail.com>
+Date: Mon, 8 Mar 2021 16:47:08 +0800
+Subject: [PATCH] debug logs of SOTI boot fail issue
+
+---
+ .../core/java/android/app/ActivityThread.java |   3 +-
+ .../android/content/pm/PackageUserState.java  |  32 ++++-
+ .../java/android/content/pm/ResolveInfo.java  |   1 +
+ .../com/android/server/IntentResolver.java    |  26 +++-
+ .../server/am/ActivityManagerService.java     |  15 +++
+ .../com/android/server/am/ActivityRecord.java |   3 +
+ .../server/am/ActivityStackSupervisor.java    |  11 +-
+ .../com/android/server/am/UserController.java |   4 +
+ .../server/pm/PackageManagerService.java      | 112 +++++++++++++++++-
+ .../android/server/pm/PackageSettingBase.java |   6 +-
+ .../java/com/android/server/pm/Settings.java  |   7 +-
+ .../android/server/pm/UserManagerService.java |   5 +
+ .../server/wm/WindowManagerService.java       |  28 +++--
+ 13 files changed, 251 insertions(+), 42 deletions(-)
+
+
+diff --git a/bsp/android/frameworks/base/core/java/android/app/ActivityThread.java b/bsp/android/frameworks/base/core/java/android/app/ActivityThread.java
+index 6a2b9aa229..bc53ee757a 100644
+--- a/bsp/android/frameworks/base/core/java/android/app/ActivityThread.java
++++ b/bsp/android/frameworks/base/core/java/android/app/ActivityThread.java
+@@ -1765,12 +1765,13 @@ public final class ActivityThread {
+                 IActivityManager am = ActivityManagerNative.getDefault();
+                 ActivityClientRecord prev;
+                 do {
+-                    if (localLOGV) Slog.v(
++                    if (true || localLOGV) Slog.v(
+                         TAG, "Reporting idle of " + a +
+                         " finished=" +
+                         (a.activity != null && a.activity.mFinished));
+                     if (a.activity != null && !a.activity.mFinished) {
+                         try {
++                            Log.d(TAG, getClass().getName() + " . queueIdle: " + a, new RuntimeException().fillInStackTrace());
+                             am.activityIdle(a.token, a.createdConfig, stopProfiling);
+                             a.createdConfig = null;
+                         } catch (RemoteException ex) {
+diff --git a/bsp/android/frameworks/base/core/java/android/content/pm/PackageUserState.java b/bsp/android/frameworks/base/core/java/android/content/pm/PackageUserState.java
+index 995d2ccce9..1965f526ae 100644
+--- a/bsp/android/frameworks/base/core/java/android/content/pm/PackageUserState.java
++++ b/bsp/android/frameworks/base/core/java/android/content/pm/PackageUserState.java
+@@ -31,6 +31,8 @@ import android.util.ArraySet;
+
+ import com.android.internal.util.ArrayUtils;
+
++import android.util.Log;
++
+ /**
+  * Per-user state information about a package.
+  * @hide
+@@ -94,11 +96,20 @@ public class PackageUserState {
+      * </p>
+      */
+     public boolean isMatch(ComponentInfo componentInfo, int flags) {
+-        if (!isInstalled(flags)) return false;
+-        if (!isEnabled(componentInfo, flags)) return false;
++        boolean debug = android.os.Debug.getCallers(10).contains("resolveActivityInfo");
++
++        if (!isInstalled(flags)) {
++            if (debug) Log.d(getClass().getName(), "isMatch: #1");
++            return false;
++        }
++        if (!isEnabled(componentInfo, flags)) {
++            if (debug) Log.d(getClass().getName(), "isMatch: #2");
++            return false;
++        }
+
+         if ((flags & MATCH_SYSTEM_ONLY) != 0) {
+             if (!componentInfo.applicationInfo.isSystemApp()) {
++                if (debug) Log.d(getClass().getName(), "isMatch: #3");
+                 return false;
+             }
+         }
+@@ -107,6 +118,12 @@ public class PackageUserState {
+                 && !componentInfo.directBootAware;
+         final boolean matchesAware = ((flags & MATCH_DIRECT_BOOT_AWARE) != 0)
+                 && componentInfo.directBootAware;
++
++        if ((matchesUnaware || matchesAware) == false)
++            if (debug) Log.d(getClass().getName(), "isMatch: #4 flags=0x" + Integer.toHexString(flags)
++                    + ", matchesUnaware=" + matchesUnaware + ", matchesAware=" + matchesAware
++                    + ", componentInfo.directBootAware=" + componentInfo.directBootAware);
++
+         return matchesUnaware || matchesAware;
+     }
+
+@@ -114,6 +131,8 @@ public class PackageUserState {
+      * Test if the given component is considered enabled.
+      */
+     public boolean isEnabled(ComponentInfo componentInfo, int flags) {
++        boolean debug = android.os.Debug.getCallers(10).contains("resolveActivityInfo");
++
+         if ((flags & MATCH_DISABLED_COMPONENTS) != 0) {
+             return true;
+         }
+@@ -123,13 +142,16 @@ public class PackageUserState {
+         switch (this.enabled) {
+             case COMPONENT_ENABLED_STATE_DISABLED:
+             case COMPONENT_ENABLED_STATE_DISABLED_USER:
++                if (debug) Log.d(getClass().getName(), "isEnabled: #1 " + componentInfo + ", flags=0x" + Integer.toHexString(flags) + ", enabled=" + this.enabled);
+                 return false;
+             case COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED:
+                 if ((flags & MATCH_DISABLED_UNTIL_USED_COMPONENTS) == 0) {
++                    if (debug) Log.d(getClass().getName(), "isEnabled: #2 " + componentInfo + ", flags=0x" + Integer.toHexString(flags) + ", enabled=" + this.enabled);
+                     return false;
+                 }
+             case COMPONENT_ENABLED_STATE_DEFAULT:
+                 if (!componentInfo.applicationInfo.enabled) {
++                    if (debug) Log.d(getClass().getName(), "isEnabled: #3 " + componentInfo + ", flags=0x" + Integer.toHexString(flags));
+                     return false;
+                 }
+             case COMPONENT_ENABLED_STATE_ENABLED:
+@@ -138,13 +160,17 @@ public class PackageUserState {
+
+         // Check if component has explicit state before falling through to
+         // the manifest default
+-        if (ArrayUtils.contains(this.enabledComponents, componentInfo.name)) {
++        if (ArrayUtils.contains(this.enabledComponents, componentInfo.name)) {
+             return true;
+         }
+         if (ArrayUtils.contains(this.disabledComponents, componentInfo.name)) {
++            if (debug) Log.d(getClass().getName(), "isEnabled: #4 " + componentInfo + ", flags=0x" + Integer.toHexString(flags));
+             return false;
+         }
+
++        if (!componentInfo.enabled)
++            if (debug) Log.d(getClass().getName(), "isEnabled: #5 " + componentInfo + ", flags=0x" + Integer.toHexString(flags));
++
+         return componentInfo.enabled;
+     }
+ }
+diff --git a/bsp/android/frameworks/base/core/java/android/content/pm/ResolveInfo.java b/bsp/android/frameworks/base/core/java/android/content/pm/ResolveInfo.java
+index b5df4d75a2..85b2c72047 100644
+--- a/bsp/android/frameworks/base/core/java/android/content/pm/ResolveInfo.java
++++ b/bsp/android/frameworks/base/core/java/android/content/pm/ResolveInfo.java
+@@ -347,6 +347,7 @@ public class ResolveInfo implements Parcelable {
+             sb.append(" targetUserId=");
+             sb.append(targetUserId);
+         }
++		sb.append(" " + activityInfo);
+         sb.append('}');
+         return sb.toString();
+     }
+diff --git a/bsp/android/frameworks/base/services/core/java/com/android/server/IntentResolver.java b/bsp/android/frameworks/base/services/core/java/com/android/server/IntentResolver.java
+index 83d374c41a..59ad46e017 100644
+--- a/bsp/android/frameworks/base/services/core/java/com/android/server/IntentResolver.java
++++ b/bsp/android/frameworks/base/services/core/java/com/android/server/IntentResolver.java
+@@ -371,12 +371,25 @@ public abstract class IntentResolver<F extends IntentFilter, R extends Object> {
+
+     public List<R> queryIntent(Intent intent, String resolvedType, boolean defaultOnly,
+             int userId) {
++
++//		Slog.d(TAG, "queryIntent: " + intent
++//			+ ", resolvedType=" + resolvedType
++//			+ ", defaultOnly=" + defaultOnly
++//			+ ", userId=" + userId);
++
++
++
+         String scheme = intent.getScheme();
+
+         ArrayList<R> finalList = new ArrayList<R>();
+
++
++
+         final boolean debug = localLOGV ||
+-                ((intent.getFlags() & Intent.FLAG_DEBUG_LOG_RESOLUTION) != 0);
++                ((intent.getFlags() & Intent.FLAG_DEBUG_LOG_RESOLUTION) != 0)
++                || ((intent.getCategories() != null) && (intent.getCategories().contains(Intent.CATEGORY_HOME)));
++
++//		Slog.d(TAG, "queryIntent: debug=" + debug);
+
+         if (debug) Slog.v(
+             TAG, "Resolving type=" + resolvedType + " scheme=" + scheme
+@@ -696,6 +709,12 @@ public abstract class IntentResolver<F extends IntentFilter, R extends Object> {
+     private void buildResolveList(Intent intent, FastImmutableArraySet<String> categories,
+             boolean debug, boolean defaultOnly,
+             String resolvedType, String scheme, F[] src, List<R> dest, int userId) {
++
++        if (debug && android.os.Debug.getCallers(10).contains("resolveActivityInfo")) {
++        } else {
++            debug = false;
++        }
++
+         final String action = intent.getAction();
+         final Uri data = intent.getData();
+         final String packageName = intent.getPackage();
+@@ -760,7 +779,12 @@ public abstract class IntentResolver<F extends IntentFilter, R extends Object> {
+                         Integer.toHexString(match) + " hasDefault="
+                         + filter.hasCategory(Intent.CATEGORY_DEFAULT));
+                 if (!defaultOnly || filter.hasCategory(Intent.CATEGORY_DEFAULT)) {
++                    if (debug) Slog.d(TAG, "  - < newResult");
++
+                     final R oneResult = newResult(filter, match, userId);
++
++                    if (debug) Slog.d(TAG, "  - > newResult: " + oneResult);
++
+                     if (oneResult != null) {
+                         dest.add(oneResult);
+                         if (debug) {
+diff --git a/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java b/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+index f8b170464a..65c63991b0 100644
+--- a/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
++++ b/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityManagerService.java
+@@ -4746,12 +4746,15 @@ public final class ActivityManagerService extends ActivityManagerNative
+     }
+
+     Intent getHomeIntent() {
++    	Slog.d(TAG, "getHomeIntent: mTopAction=" + mTopAction + ", mTopData=" + mTopData + ", mTopComponent=" + mTopComponent, new RuntimeException().fillInStackTrace());
++
+         Intent intent = new Intent(mTopAction, mTopData != null ? Uri.parse(mTopData) : null);
+         intent.setComponent(mTopComponent);
+         intent.addFlags(Intent.FLAG_DEBUG_TRIAGED_MISSING);
+         if (mFactoryTest != FactoryTest.FACTORY_TEST_LOW_LEVEL) {
+             intent.addCategory(Intent.CATEGORY_HOME);
+         }
++		Slog.d(TAG, "getHomeIntent: mFactoryTest=" + mFactoryTest + ", " + intent, new RuntimeException().fillInStackTrace());
+         return intent;
+     }
+
+@@ -4792,6 +4795,9 @@ public final class ActivityManagerService extends ActivityManagerNative
+                 // Factory test.
+                 ai = AppGlobals.getPackageManager().getActivityInfo(comp, flags, userId);
+             } else {
++
++				Slog.d(TAG, "resolveActivityInfo: intent=" + intent);
++
+                 ResolveInfo info = AppGlobals.getPackageManager().resolveIntent(
+                         intent,
+                         intent.resolveTypeIfNeeded(mContext.getContentResolver()),
+@@ -4803,6 +4809,7 @@ public final class ActivityManagerService extends ActivityManagerNative
+             }
+         } catch (RemoteException e) {
+             // ignore
++            Slog.d(TAG, "resolveActivityInfo: ", e);
+         }
+
+         return ai;
+@@ -7584,6 +7591,7 @@ public final class ActivityManagerService extends ActivityManagerNative
+     }
+
+     void enableScreenAfterBoot() {
++        Slog.d(TAG, "enableScreenAfterBoot: ", new RuntimeException().fillInStackTrace());
+         EventLog.writeEvent(EventLogTags.BOOT_PROGRESS_ENABLE_SCREEN,
+                 SystemClock.uptimeMillis());
+         mWindowManager.enableScreenAfterBoot();
+@@ -7642,9 +7650,14 @@ public final class ActivityManagerService extends ActivityManagerNative
+     }
+
+     final void finishBooting() {
++        Slog.d(TAG, "finishBooting: #1");
++
+         synchronized (this) {
++            Slog.d(TAG, "finishBooting: #2");
++
+             if (!mBootAnimationComplete) {
+                 mCallFinishBooting = true;
++                Slog.d(TAG, "finishBooting: #3");
+                 return;
+             }
+             mCallFinishBooting = false;
+@@ -7678,6 +7691,7 @@ public final class ActivityManagerService extends ActivityManagerNative
+                             if (forceStopPackageLocked(pkg, -1, false, false, false, false, false,
+                                     0, "query restart")) {
+                                 setResultCode(Activity.RESULT_OK);
++                                Slog.d(TAG, "finishBooting: #4");
+                                 return;
+                             }
+                         }
+@@ -7761,6 +7775,7 @@ public final class ActivityManagerService extends ActivityManagerNative
+         synchronized (this) {
+             callFinishBooting = mCallFinishBooting;
+             mBootAnimationComplete = true;
++            Slog.d(TAG, "bootAnimationComplete: mCallFinishBooting=" + mCallFinishBooting);
+         }
+         if (callFinishBooting) {
+             Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, "FinishBooting");
+diff --git a/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityRecord.java b/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityRecord.java
+index 3f69712efa..fedb094844 100755
+--- a/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityRecord.java
++++ b/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityRecord.java
+@@ -1547,6 +1547,9 @@ final class ActivityRecord {
+         sb.append(" u");
+         sb.append(userId);
+         sb.append(' ');
++        sb.append("idle=");
++        sb.append(idle);
++        sb.append(' ');
+         sb.append(intent.getComponent().flattenToShortString());
+         stringName = sb.toString();
+         return toString();
+diff --git a/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityStackSupervisor.java b/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityStackSupervisor.java
+index 636982f0a2..dc0a726082 100644
+--- a/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityStackSupervisor.java
++++ b/bsp/android/frameworks/base/services/core/java/com/android/server/am/ActivityStackSupervisor.java
+@@ -619,6 +619,9 @@ public final class ActivityStackSupervisor implements DisplayListener {
+             mService.setFocusedActivityLocked(r, reason + " setFocusStack");
+         }
+
++       Slog.d(TAG, "setFocusStackUnchecked: r=" + r + ", mService.mBooting=" + mService.mBooting + ", mService.mBooted=" + mService.mBooted,
++            new RuntimeException().fillInStackTrace());
++
+         if (mService.mBooting || !mService.mBooted) {
+             if (r != null && r.idle) {
+                 checkFinishBootingLocked();
+@@ -1613,6 +1616,7 @@ public final class ActivityStackSupervisor implements DisplayListener {
+             enableScreen = true;
+         }
+         if (booting || enableScreen) {
++            Slog.d(TAG, "checkFinishBootingLocked: post FinishBooting");
+             mService.postFinishBooting(booting, enableScreen);
+         }
+         return booting;
+@@ -1621,7 +1625,7 @@ public final class ActivityStackSupervisor implements DisplayListener {
+     // Checked.
+     final ActivityRecord activityIdleInternalLocked(final IBinder token, boolean fromTimeout,
+             Configuration config) {
+-        if (DEBUG_ALL) Slog.v(TAG, "Activity idle: " + token);
++        if (true || DEBUG_ALL) Slog.v(TAG, "activityIdleInternalLocked: Activity idle: " + token);
+
+         ArrayList<ActivityRecord> finishes = null;
+         ArrayList<UserState> startingUsers = null;
+@@ -1632,7 +1636,7 @@ public final class ActivityStackSupervisor implements DisplayListener {
+
+         ActivityRecord r = ActivityRecord.forTokenLocked(token);
+         if (r != null) {
+-            if (DEBUG_IDLE) Slog.d(TAG_IDLE, "activityIdleInternalLocked: Callers="
++            if (true || DEBUG_IDLE) Slog.d(TAG_IDLE, "activityIdleInternalLocked: Callers="
+                     + Debug.getCallers(4));
+             mHandler.removeMessages(IDLE_TIMEOUT_MSG, r);
+             r.finishLaunchTickingLocked();
+@@ -1653,8 +1657,9 @@ public final class ActivityStackSupervisor implements DisplayListener {
+             // us, we can now deliver.
+             r.idle = true;
+
+-            //Slog.i(TAG, "IDLE: mBooted=" + mBooted + ", fromTimeout=" + fromTimeout);
++            Slog.i(TAG, "activityIdleInternalLocked: fromTimeout=" + fromTimeout);
+             if (isFocusedStack(r.task.stack) || fromTimeout) {
++                Slog.d(TAG, "activityIdleInternalLocked: call checkFinishBootingLocked()");
+                 booting = checkFinishBootingLocked();
+             }
+         }
+diff --git a/bsp/android/frameworks/base/services/core/java/com/android/server/am/UserController.java b/bsp/android/frameworks/base/services/core/java/com/android/server/am/UserController.java
+index 4bc148bef2..d05c711d14 100644
+--- a/bsp/android/frameworks/base/services/core/java/com/android/server/am/UserController.java
++++ b/bsp/android/frameworks/base/services/core/java/com/android/server/am/UserController.java
+@@ -256,6 +256,7 @@ final class UserController {
+             // We need to delay unlocking managed profiles until the parent user
+             // is also unlocked.
+             if (getUserManager().isManagedProfile(userId)) {
++                Slog.d(TAG, "finishUserBoot: " + userId + " #1");
+                 final UserInfo parent = getUserManager().getProfileParent(userId);
+                 if (parent != null
+                         && isUserRunningLocked(parent.id, ActivityManager.FLAG_AND_UNLOCKED)) {
+@@ -268,6 +269,7 @@ final class UserController {
+                             + "): delaying unlock because parent is locked");
+                 }
+             } else {
++                Slog.d(TAG, "finishUserBoot: " + userId + " #2");
+                 maybeUnlockUser(userId);
+             }
+         }
+@@ -1335,8 +1337,10 @@ final class UserController {
+     }
+
+     void sendBootCompletedLocked(IIntentReceiver resultTo) {
++       Slog.d(TAG, "sendBootCompletedLocked: startedUsers size=" + mStartedUsers.size());
+         for (int i = 0; i < mStartedUsers.size(); i++) {
+             UserState uss = mStartedUsers.valueAt(i);
++            Slog.d(TAG, "sendBootCompletedLocked: i=" + i);
+             finishUserBoot(uss, resultTo);
+         }
+     }
+diff --git a/bsp/android/frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.java b/bsp/android/frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.java
+index 065804fc38..d9dbb38149 100644
+--- a/bsp/android/frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.java
++++ b/bsp/android/frameworks/base/services/core/java/com/android/server/pm/PackageManagerService.java
+@@ -3441,6 +3441,9 @@ public class PackageManagerService extends IPackageManager.Stub {
+      * Update given flags based on encryption status of current user.
+      */
+     private int updateFlags(int flags, int userId) {
++
++       boolean debug =  android.os.Debug.getCallers(10).contains("resolveActivityInfo");
++
+         if ((flags & (PackageManager.MATCH_DIRECT_BOOT_UNAWARE
+                 | PackageManager.MATCH_DIRECT_BOOT_AWARE)) != 0) {
+             // Caller expressed an explicit opinion about what encryption
+@@ -3449,8 +3452,10 @@ public class PackageManagerService extends IPackageManager.Stub {
+         } else {
+             // Caller expressed no opinion, so match based on user state
+             if (getUserManagerInternal().isUserUnlockingOrUnlocked(userId)) {
++                if (debug) Log.d(TAG, "updateFlags: #1");
+                 flags |= PackageManager.MATCH_DIRECT_BOOT_AWARE | MATCH_DIRECT_BOOT_UNAWARE;
+             } else {
++                if (debug) Log.d(TAG, "updateFlags: #2");
+                 flags |= PackageManager.MATCH_DIRECT_BOOT_AWARE;
+             }
+         }
+@@ -4845,6 +4850,10 @@ public class PackageManagerService extends IPackageManager.Stub {
+     @Override
+     public ResolveInfo resolveIntent(Intent intent, String resolvedType,
+             int flags, int userId) {
++
++		Log.d(TAG, "resolveIntent: intent=" + intent + ", resolvedType=" + resolvedType
++			+ ", flags=0x" + Integer.toHexString(flags) + ", userId=" + userId);
++
+         try {
+             Trace.traceBegin(TRACE_TAG_PACKAGE_MANAGER, "resolveIntent");
+
+@@ -4854,8 +4863,18 @@ public class PackageManagerService extends IPackageManager.Stub {
+                     false /*requireFullPermission*/, false /*checkShell*/, "resolve intent");
+
+             Trace.traceBegin(TRACE_TAG_PACKAGE_MANAGER, "queryIntentActivities");
++
++			Log.d(TAG, "resolveIntent: intent=" + intent + ", resolvedType=" + resolvedType
++				+ ", flags=0x" + Integer.toHexString(flags) + ", userId=" + userId);
++
++
+             final List<ResolveInfo> query = queryIntentActivitiesInternal(intent, resolvedType,
+                     flags, userId);
++
++
++			for (ResolveInfo ri : query)
++				Log.d(TAG, "resolveIntent: " + ri);
++
+             Trace.traceEnd(TRACE_TAG_PACKAGE_MANAGER);
+
+             final ResolveInfo bestChoice =
+@@ -5023,12 +5042,16 @@ public class PackageManagerService extends IPackageManager.Stub {
+
+     private ResolveInfo chooseBestActivity(Intent intent, String resolvedType,
+             int flags, List<ResolveInfo> query, int userId) {
++
++		Slog.d(TAG, "chooseBestActivity: " + intent + ", " + resolvedType + ", flags=0x" + Integer.toHexString(flags) + ", userId=" + userId);
++
+         if (query != null) {
+             final int N = query.size();
+             if (N == 1) {
++				Slog.d(TAG, "chooseBestActivity: #0, " + query.get(0));
+                 return query.get(0);
+             } else if (N > 1) {
+-                final boolean debug = ((intent.getFlags() & Intent.FLAG_DEBUG_LOG_RESOLUTION) != 0);
++                final boolean debug = true | ((intent.getFlags() & Intent.FLAG_DEBUG_LOG_RESOLUTION) != 0);
+                 // If there is more than one activity with the same priority,
+                 // then let the user decide between them.
+                 ResolveInfo r0 = query.get(0);
+@@ -5042,6 +5065,8 @@ public class PackageManagerService extends IPackageManager.Stub {
+                 if (r0.priority != r1.priority
+                         || r0.preferredOrder != r1.preferredOrder
+                         || r0.isDefault != r1.isDefault) {
++
++					Slog.d(TAG, "chooseBestActivity: #1, " + query.get(0));
+                     return query.get(0);
+                 }
+                 // If we have saved a preference for a preferred activity for
+@@ -5049,6 +5074,7 @@ public class PackageManagerService extends IPackageManager.Stub {
+                 ResolveInfo ri = findPreferredActivity(intent, resolvedType,
+                         flags, query, r0.priority, true, false, debug, userId);
+                 if (ri != null) {
++					Slog.d(TAG, "chooseBestActivity: #2, " + ri);
+                     return ri;
+                 }
+                 ri = new ResolveInfo(mResolveInfo);
+@@ -5082,9 +5108,11 @@ public class PackageManagerService extends IPackageManager.Stub {
+                 // Make sure that the resolver is displayable in car mode
+                 if (ri.activityInfo.metaData == null) ri.activityInfo.metaData = new Bundle();
+                 ri.activityInfo.metaData.putBoolean(Intent.METADATA_DOCK_HOME, true);
++				Slog.d(TAG, "chooseBestActivity: #3, " + ri);
+                 return ri;
+             }
+         }
++		Slog.d(TAG, "chooseBestActivity: #4");
+         return null;
+     }
+
+@@ -5381,27 +5409,51 @@ public class PackageManagerService extends IPackageManager.Stub {
+
+     private @NonNull List<ResolveInfo> queryIntentActivitiesInternal(Intent intent,
+             String resolvedType, int flags, int userId) {
++
++		Slog.d(TAG, "queryIntentActivitiesInternal: #1 " + intent + ", resolvedType=" + resolvedType + ", flags=0x" + Integer.toHexString(flags)
++			+ ", userId=" + userId);
++
+         if (!sUserManager.exists(userId)) return Collections.emptyList();
++
+         flags = updateFlagsForResolve(flags, userId, intent);
++
++		Slog.d(TAG, "queryIntentActivitiesInternal: #2 , flags=0x" + Integer.toHexString(flags));
++
++
+         enforceCrossUserPermission(Binder.getCallingUid(), userId,
+                 false /* requireFullPermission */, false /* checkShell */,
+                 "query intent activities");
++
++
++
++
++
+         ComponentName comp = intent.getComponent();
++
++		Slog.d(TAG, "queryIntentActivitiesInternal: #2-2 " + comp);
++
++
+         if (comp == null) {
+             if (intent.getSelector() != null) {
++
+                 intent = intent.getSelector();
+                 comp = intent.getComponent();
++
++				Slog.d(TAG, "queryIntentActivitiesInternal: #3 , " + intent + ", " + comp);
+             }
+         }
+
+         if (comp != null) {
++
+             final List<ResolveInfo> list = new ArrayList<ResolveInfo>(1);
+             final ActivityInfo ai = getActivityInfo(comp, flags, userId);
+             if (ai != null) {
++				Slog.d(TAG, "queryIntentActivitiesInternal: #4");
+                 final ResolveInfo ri = new ResolveInfo();
+                 ri.activityInfo = ai;
+                 list.add(ri);
+             }
++			Slog.d(TAG, "queryIntentActivitiesInternal: #5");
+             return list;
+         }
+
+@@ -5411,16 +5463,24 @@ public class PackageManagerService extends IPackageManager.Stub {
+         boolean matchEphemeralPackage = false;
+         List<ResolveInfo> result;
+         final String pkgName = intent.getPackage();
++
++		Slog.d(TAG, "queryIntentActivitiesInternal: #5-2 " + pkgName);
++
+         synchronized (mPackages) {
+             if (pkgName == null) {
++
+                 List<CrossProfileIntentFilter> matchingFilters =
+                         getMatchingCrossProfileIntentFilters(intent, resolvedType, userId);
++
+                 // Check for results that need to skip the current profile.
+                 ResolveInfo xpResolveInfo  = querySkipCurrentProfileIntents(matchingFilters, intent,
+                         resolvedType, flags, userId);
++
+                 if (xpResolveInfo != null) {
+                     List<ResolveInfo> xpResult = new ArrayList<ResolveInfo>(1);
+                     xpResult.add(xpResolveInfo);
++
++					Slog.d(TAG, "queryIntentActivitiesInternal: #6");
+                     return filterIfNotSystemUser(xpResult, userId);
+                 }
+
+@@ -5436,14 +5496,23 @@ public class PackageManagerService extends IPackageManager.Stub {
+                         matchingFilters, intent, resolvedType, flags, userId,
+                         hasNonNegativePriorityResult);
+                 if (xpResolveInfo != null && isUserEnabled(xpResolveInfo.targetUserId)) {
++
++					Slog.d(TAG, "queryIntentActivitiesInternal: #7");
++
+                     boolean isVisibleToUser = filterIfNotSystemUser(
+                             Collections.singletonList(xpResolveInfo), userId).size() > 0;
+                     if (isVisibleToUser) {
++
++						Slog.d(TAG, "queryIntentActivitiesInternal: #8");
++
+                         result.add(xpResolveInfo);
+                         sortResult = true;
+                     }
+                 }
+                 if (hasWebURI(intent)) {
++
++					Slog.d(TAG, "queryIntentActivitiesInternal: #9");
++
+                     CrossProfileDomainInfo xpDomainInfo = null;
+                     final UserInfo parent = getProfileParent(userId);
+                     if (parent != null) {
+@@ -5458,6 +5527,7 @@ public class PackageManagerService extends IPackageManager.Stub {
+                         }
+                         if (result.size() == 0 && !addEphemeral) {
+                             result.add(xpDomainInfo.resolveInfo);
++							Slog.d(TAG, "queryIntentActivitiesInternal: #9-2");
+                             return result;
+                         }
+                     }
+@@ -5468,13 +5538,21 @@ public class PackageManagerService extends IPackageManager.Stub {
+                     }
+                 }
+             } else {
++
++				Slog.d(TAG, "queryIntentActivitiesInternal: #10");
++
+                 final PackageParser.Package pkg = mPackages.get(pkgName);
+                 if (pkg != null) {
++
++					Slog.d(TAG, "queryIntentActivitiesInternal: #11");
++
+                     result = filterIfNotSystemUser(
+                             mActivities.queryIntentForPackage(
+                                     intent, resolvedType, flags, pkg.activities, userId),
+                             userId);
+                 } else {
++					Slog.d(TAG, "queryIntentActivitiesInternal: #12");
++
+                     // the caller wants to resolve for a particular package; however, there
+                     // were no installed results, so, try to find an ephemeral result
+                     addEphemeral = isEphemeralAllowed(
+@@ -5485,6 +5563,9 @@ public class PackageManagerService extends IPackageManager.Stub {
+             }
+         }
+         if (addEphemeral) {
++
++			Slog.d(TAG, "queryIntentActivitiesInternal: #13");
++
+             Trace.traceBegin(TRACE_TAG_PACKAGE_MANAGER, "resolveEphemeral");
+             final EphemeralResolveInfo ai = getEphemeralResolveInfo(
+                     mContext, mEphemeralResolverConnection, intent, resolvedType, userId,
+@@ -5510,6 +5591,7 @@ public class PackageManagerService extends IPackageManager.Stub {
+         if (sortResult) {
+             Collections.sort(result, mResolvePrioritySorter);
+         }
++		Slog.d(TAG, "queryIntentActivitiesInternal: #14");
+         return result;
+     }
+
+@@ -5596,12 +5678,23 @@ public class PackageManagerService extends IPackageManager.Stub {
+      * @return filtered list
+      */
+     private List<ResolveInfo> filterIfNotSystemUser(List<ResolveInfo> resolveInfos, int userId) {
++    	Slog.d(TAG, "filterIfNotSystemUser: userId=" + userId);
++
++		for (ResolveInfo ri : resolveInfos) {
++			Slog.d(TAG, "filterIfNotSystemUser: #1 " + ri);
++		}
++
+         if (userId == UserHandle.USER_SYSTEM) {
++			Slog.d(TAG, "filterIfNotSystemUser: #2");
+             return resolveInfos;
+         }
+         for (int i = resolveInfos.size() - 1; i >= 0; i--) {
+             ResolveInfo info = resolveInfos.get(i);
++
++			Slog.d(TAG, "filterIfNotSystemUser: #3 " + info);
++
+             if ((info.activityInfo.flags & ActivityInfo.FLAG_SYSTEM_USER_ONLY) != 0) {
++				Slog.d(TAG, "filterIfNotSystemUser: #4");
+                 resolveInfos.remove(i);
+             }
+         }
+@@ -10512,6 +10605,12 @@ public class PackageManagerService extends IPackageManager.Stub {
+                 int userId) {
+             if (!sUserManager.exists(userId)) return null;
+             mFlags = flags;
++
++			Slog.d(TAG, getClass().getName() + " . queryIntent: " + intent
++				+ ", resolvedType=" + resolvedType
++				+ ", flags=0x" + Integer.toHexString(flags)
++				+ ", userId=" + userId);
++
+             return super.queryIntent(intent, resolvedType,
+                     (flags & PackageManager.MATCH_DEFAULT_ONLY) != 0, userId);
+         }
+@@ -10941,18 +11040,27 @@ public class PackageManagerService extends IPackageManager.Stub {
+         @Override
+         protected ResolveInfo newResult(PackageParser.ActivityIntentInfo info,
+                 int match, int userId) {
+-            if (!sUserManager.exists(userId)) return null;
++
++           boolean debug = android.os.Debug.getCallers(10).contains("resolveActivityInfo");
++
++            if (!sUserManager.exists(userId)) {
++                if (debug) Log.d(TAG, getClass().getName() + " . newResult: #0");
++                return null;
++            }
+             if (!mSettings.isEnabledAndMatchLPr(info.activity.info, mFlags, userId)) {
++               if (debug) Log.d(TAG, getClass().getName() + " . newResult: #1");
+                 return null;
+             }
+             final PackageParser.Activity activity = info.activity;
+             PackageSetting ps = (PackageSetting) activity.owner.mExtras;
+             if (ps == null) {
++                if (debug) Log.d(TAG, getClass().getName() + " . newResult: #2");
+                 return null;
+             }
+             ActivityInfo ai = PackageParser.generateActivityInfo(activity, mFlags,
+                     ps.readUserState(userId), userId);
+             if (ai == null) {
++                Log.d(TAG, getClass().getName() + " . newResult: #3");
+                 return null;
+             }
+             final ResolveInfo res = new ResolveInfo();
+diff --git a/bsp/android/frameworks/base/services/core/java/com/android/server/pm/PackageSettingBase.java b/bsp/android/frameworks/base/services/core/java/com/android/server/pm/PackageSettingBase.java
+index 851f085975..35cd7cd8f8 100644
+--- a/bsp/android/frameworks/base/services/core/java/com/android/server/pm/PackageSettingBase.java
++++ b/bsp/android/frameworks/base/services/core/java/com/android/server/pm/PackageSettingBase.java
+@@ -57,7 +57,7 @@ abstract class PackageSettingBase extends SettingBase {
+
+     /**
+      * Path where this package was found on disk. For monolithic packages
+-     * this is path to single base APK file; for cluster packages this is
++     * this is path to single base APK file; for cluster packages this iss
+      * path to the cluster directory.
+      */
+     File codePath;
+@@ -281,6 +281,8 @@ abstract class PackageSettingBase extends SettingBase {
+         PackageUserState st = modifyUserState(userId);
+         st.enabled = state;
+         st.lastDisableAppCaller = callingPackage;
++        android.util.Log.d(getClass().getName(), "setEnabled: " + name   + " state=" + state + " userId=" + userId + " callingPackage=" + callingPackage,
++            new RuntimeException().fillInStackTrace());
+     }
+
+     int getEnabled(int userId) {
+@@ -393,6 +395,8 @@ abstract class PackageSettingBase extends SettingBase {
+         state.blockUninstall = blockUninstall;
+         state.domainVerificationStatus = domainVerifState;
+         state.appLinkGeneration = linkGeneration;
++        android.util.Log.d(getClass().getName(), "setUserState: " + name + " enabled=" + enabled + " userId=" + userId,
++            new RuntimeException().fillInStackTrace());
+     }
+
+     ArraySet<String> getEnabledComponents(int userId) {
+diff --git a/bsp/android/frameworks/base/services/core/java/com/android/server/pm/Settings.java b/bsp/android/frameworks/base/services/core/java/com/android/server/pm/Settings.java
+index ebdede388d..d4ef74d3e5 100644
+--- a/bsp/android/frameworks/base/services/core/java/com/android/server/pm/Settings.java
++++ b/bsp/android/frameworks/base/services/core/java/com/android/server/pm/Settings.java
+@@ -4114,8 +4114,13 @@ final class Settings {
+     }
+
+     boolean isEnabledAndMatchLPr(ComponentInfo componentInfo, int flags, int userId) {
++        boolean debug = android.os.Debug.getCallers(10).contains("resolveActivityInfo");
++
+         final PackageSetting ps = mPackages.get(componentInfo.packageName);
+-        if (ps == null) return false;
++        if (ps == null) {
++           if (debug) Slog.d(TAG, "isEnabledAndMatchLPr: #1");
++           return false;
++        }
+
+         final PackageUserState userState = ps.readUserState(userId);
+         return userState.isMatch(componentInfo, flags);
+diff --git a/bsp/android/frameworks/base/services/core/java/com/android/server/pm/UserManagerService.java b/bsp/android/frameworks/base/services/core/java/com/android/server/pm/UserManagerService.java
+index af055da2b9..29e5a70e65 100644
+--- a/bsp/android/frameworks/base/services/core/java/com/android/server/pm/UserManagerService.java
++++ b/bsp/android/frameworks/base/services/core/java/com/android/server/pm/UserManagerService.java
+@@ -439,6 +439,7 @@ public class UserManagerService extends IUserManager.Stub {
+         LocalServices.addService(UserManagerInternal.class, mLocalService);
+         mLockPatternUtils = new LockPatternUtils(mContext);
+         mUserStates.put(UserHandle.USER_SYSTEM, UserState.STATE_BOOTING);
++        Log.d(getClass().getName(), "UserManagerService: constructor 0/booting", new RuntimeException().fillInStackTrace());
+     }
+
+     void systemReady() {
+@@ -2564,6 +2565,7 @@ public class UserManagerService extends IUserManager.Stub {
+             mIsUserManaged.delete(userHandle);
+         }
+         synchronized (mUserStates) {
++            Log.d(getClass().getName(), "removeUserState: " + userHandle, new RuntimeException().fillInStackTrace());
+             mUserStates.delete(userHandle);
+         }
+         synchronized (mRestrictionsLock) {
+@@ -3466,6 +3468,7 @@ public class UserManagerService extends IUserManager.Stub {
+         @Override
+         public void setUserState(int userId, int userState) {
+             synchronized (mUserStates) {
++                Log.d(getClass().getName(), "setUserState: userId=" + userId + ", userState=" + userState, new RuntimeException().fillInStackTrace());
+                 mUserStates.put(userId, userState);
+             }
+         }
+@@ -3473,6 +3476,7 @@ public class UserManagerService extends IUserManager.Stub {
+         @Override
+         public void removeUserState(int userId) {
+             synchronized (mUserStates) {
++                Log.d(getClass().getName(), "removeUserState: userId=" + userId, new RuntimeException().fillInStackTrace());
+                 mUserStates.delete(userId);
+             }
+         }
+@@ -3481,6 +3485,7 @@ public class UserManagerService extends IUserManager.Stub {
+         public boolean isUserUnlockingOrUnlocked(int userId) {
+             synchronized (mUserStates) {
+                 int state = mUserStates.get(userId, -1);
++               // Log.d(getClass().getName(), "isUserUnlockingOrUnlocked: userId=" + userId + ", state=" + state, new RuntimeException().fillInStackTrace());
+                 return (state == UserState.STATE_RUNNING_UNLOCKING)
+                         || (state == UserState.STATE_RUNNING_UNLOCKED);
+             }
+diff --git a/bsp/android/frameworks/base/services/core/java/com/android/server/wm/WindowManagerService.java b/bsp/android/frameworks/base/services/core/java/com/android/server/wm/WindowManagerService.java
+index 2203ebbee9..a51278e5da 100644
+--- a/bsp/android/frameworks/base/services/core/java/com/android/server/wm/WindowManagerService.java
++++ b/bsp/android/frameworks/base/services/core/java/com/android/server/wm/WindowManagerService.java
+@@ -5922,7 +5922,7 @@ public class WindowManagerService extends IWindowManager.Stub
+
+     public void enableScreenAfterBoot() {
+         synchronized(mWindowMap) {
+-            if (DEBUG_BOOT) {
++            if (true || DEBUG_BOOT) {
+                 RuntimeException here = new RuntimeException("here");
+                 here.fillInStackTrace();
+                 Slog.i(TAG_WM, "enableScreenAfterBoot: mDisplayEnabled=" + mDisplayEnabled
+@@ -5998,6 +5998,7 @@ public class WindowManagerService extends IWindowManager.Stub
+         for (int i=0; i<N; i++) {
+             WindowState w = windows.get(i);
+             if (w.isVisibleLw() && !w.mObscured && !w.isDrawnLw()) {
++                Slog.d(TAG_WM, "checkWaitingForWindowsLocked: #1");
+                 return true;
+             }
+             if (w.isDrawnLw()) {
+@@ -6014,7 +6015,7 @@ public class WindowManagerService extends IWindowManager.Stub
+             }
+         }
+
+-        if (DEBUG_SCREEN_ON || DEBUG_BOOT) {
++        if (true || DEBUG_SCREEN_ON || DEBUG_BOOT) {
+             Slog.i(TAG_WM, "******** booted=" + mSystemBooted + " msg=" + mShowingBootMessages
+                     + " haveBoot=" + haveBootMsg + " haveApp=" + haveApp
+                     + " haveWall=" + haveWallpaper + " wallEnabled=" + wallpaperEnabled
+@@ -6024,6 +6025,7 @@ public class WindowManagerService extends IWindowManager.Stub
+         // If we are turning on the screen to show the boot message,
+         // don't do it until the boot message is actually displayed.
+         if (!mSystemBooted && !haveBootMsg) {
++            Slog.d(TAG_WM, "checkWaitingForWindowsLocked: #2");
+             return true;
+         }
+
+@@ -6032,29 +6034,35 @@ public class WindowManagerService extends IWindowManager.Stub
+         // wallpaper.
+         if (mSystemBooted && ((!haveApp && !haveKeyguard) ||
+                 (wallpaperEnabled && !haveWallpaper))) {
++            Slog.d(TAG_WM, "checkWaitingForWindowsLocked: #3");
+             return true;
+         }
+
++        Slog.d(TAG_WM, "checkWaitingForWindowsLocked: #4");
+         return false;
+     }
+
+     public void performEnableScreen() {
+         synchronized(mWindowMap) {
+-            if (DEBUG_BOOT) Slog.i(TAG_WM, "performEnableScreen: mDisplayEnabled=" + mDisplayEnabled
++            if (true || DEBUG_BOOT) Slog.i(TAG_WM, "performEnableScreen: mDisplayEnabled=" + mDisplayEnabled
+                     + " mForceDisplayEnabled=" + mForceDisplayEnabled
+                     + " mShowingBootMessages=" + mShowingBootMessages
+                     + " mSystemBooted=" + mSystemBooted
+                     + " mOnlyCore=" + mOnlyCore,
+                     new RuntimeException("here").fillInStackTrace());
+             if (mDisplayEnabled) {
++                Slog.d(TAG_WM, "performEnableScreen: #1");
+                 return;
+             }
+             if (!mSystemBooted && !mShowingBootMessages) {
++                Slog.d(TAG_WM, "performEnableScreen: #2 mSystemBooted=" + mSystemBooted + ", mShowingBootMessages=" + mShowingBootMessages);
+                 return;
+             }
+
+             // Don't enable the screen until all existing windows have been drawn.
++            Slog.d(TAG_WM, "performEnableScreen: #3 mForceDisplayEnabled=" + mForceDisplayEnabled);
+             if (!mForceDisplayEnabled && checkWaitingForWindowsLocked()) {
++                Slog.d(TAG_WM, "performEnableScreen: #4 ");
+                 return;
+             }
+
+@@ -6078,14 +6086,14 @@ public class WindowManagerService extends IWindowManager.Stub
+             }
+
+             if (!mForceDisplayEnabled && !checkBootAnimationCompleteLocked()) {
+-                if (DEBUG_BOOT) Slog.i(TAG_WM, "performEnableScreen: Waiting for anim complete");
++                if (true || DEBUG_BOOT) Slog.i(TAG_WM, "performEnableScreen: Waiting for anim complete");
+                 return;
+             }
+
+             EventLog.writeEvent(EventLogTags.WM_BOOT_ANIMATION_DONE, SystemClock.uptimeMillis());
+             Trace.asyncTraceEnd(Trace.TRACE_TAG_WINDOW_MANAGER, "Stop bootanim", 0);
+             mDisplayEnabled = true;
+-            if (DEBUG_SCREEN_ON || DEBUG_BOOT) Slog.i(TAG_WM, "******************** ENABLING SCREEN!");
++            if (true || DEBUG_SCREEN_ON || DEBUG_BOOT) Slog.i(TAG_WM, "******************** ENABLING SCREEN!");
+
+             // Enable input dispatch.
+             mInputMonitor.setEventDispatchingLw(mEventDispatchingEnabled);
+@@ -6107,17 +6115,17 @@ public class WindowManagerService extends IWindowManager.Stub
+             mH.removeMessages(H.CHECK_IF_BOOT_ANIMATION_FINISHED);
+             mH.sendEmptyMessageDelayed(H.CHECK_IF_BOOT_ANIMATION_FINISHED,
+                     BOOT_ANIMATION_POLL_INTERVAL);
+-            if (DEBUG_BOOT) Slog.i(TAG_WM, "checkBootAnimationComplete: Waiting for anim complete");
++            if (true || DEBUG_BOOT) Slog.i(TAG_WM, "checkBootAnimationComplete: Waiting for anim complete");
+             return false;
+         }
+-        if (DEBUG_BOOT) Slog.i(TAG_WM, "checkBootAnimationComplete: Animation complete!");
++        if (true || DEBUG_BOOT) Slog.i(TAG_WM, "checkBootAnimationComplete: Animation complete!");
+         return true;
+     }
+
+     public void showBootMessage(final CharSequence msg, final boolean always) {
+         boolean first = false;
+         synchronized(mWindowMap) {
+-            if (DEBUG_BOOT) {
++            if (true || DEBUG_BOOT) {
+                 RuntimeException here = new RuntimeException("here");
+                 here.fillInStackTrace();
+                 Slog.i(TAG_WM, "showBootMessage: msg=" + msg + " always=" + always
+@@ -6146,7 +6154,7 @@ public class WindowManagerService extends IWindowManager.Stub
+     }
+
+     public void hideBootMessagesLocked() {
+-        if (DEBUG_BOOT) {
++        if (true || DEBUG_BOOT) {
+             RuntimeException here = new RuntimeException("here");
+             here.fillInStackTrace();
+             Slog.i(TAG_WM, "hideBootMessagesLocked: mDisplayEnabled=" + mDisplayEnabled
+@@ -8838,7 +8846,7 @@ public class WindowManagerService extends IWindowManager.Stub
+                 case CHECK_IF_BOOT_ANIMATION_FINISHED: {
+                     final boolean bootAnimationComplete;
+                     synchronized (mWindowMap) {
+-                        if (DEBUG_BOOT) Slog.i(TAG_WM, "CHECK_IF_BOOT_ANIMATION_FINISHED:");
++                        if (true || DEBUG_BOOT) Slog.i(TAG_WM, "CHECK_IF_BOOT_ANIMATION_FINISHED:");
+                         bootAnimationComplete = checkBootAnimationCompleteLocked();
+                     }
+                     if (bootAnimationComplete) {
+--
+2.17.1
+

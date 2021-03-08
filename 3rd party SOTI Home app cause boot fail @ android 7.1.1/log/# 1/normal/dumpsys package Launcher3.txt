@@ -1,0 +1,126 @@
+130|root@PD5:/ # dumpsys package com.android.launcher3
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        dc07d05 com.android.launcher3/.Launcher filter 1543154
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.HOME"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.MONKEY"
+          AutoVerify=false
+      android.intent.action.APPLICATION_PREFERENCES:
+        7eaf15a com.android.launcher3/.SettingsActivity filter 2d8c8fd
+          Action: "android.intent.action.APPLICATION_PREFERENCES"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      com.android.launcher.action.INSTALL_SHORTCUT:
+        a2e5f8b com.android.launcher3/.InstallShortcutReceiver filter cb54d66
+          Action: "com.android.launcher.action.INSTALL_SHORTCUT"
+          AutoVerify=false
+      android.appwidget.action.APPWIDGET_HOST_RESTORED:
+        75d3868 com.android.launcher3/.AppWidgetsRestoredReceiver filter 9ab38a7
+          Action: "android.appwidget.action.APPWIDGET_HOST_RESTORED"
+          AutoVerify=false
+
+Preferred Activities User 0:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        547990c com.android.launcher3/.Launcher
+         mMatch=0x100000 mAlways=true
+          Selected from:
+            com.android.launcher3/.Launcher
+            PMobile.Android/com.domain.pmobile.mainactivity
+            com.android.settings/.FallbackHome
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.HOME"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+
+Permissions:
+  Permission [com.android.launcher3.permission.READ_SETTINGS] (250e481):
+    sourcePackage=com.android.launcher3
+    uid=10056 gids=null type=0 prot=normal
+    perm=Permission{ed6c926 com.android.launcher3.permission.READ_SETTINGS}
+    packageSetting=PackageSetting{c216967 com.android.launcher3/10056}
+  Permission [com.android.launcher3.permission.WRITE_SETTINGS] (5017314):
+    sourcePackage=com.android.launcher3
+    uid=10056 gids=null type=0 prot=signature|privileged
+    perm=Permission{82647bd com.android.launcher3.permission.WRITE_SETTINGS}
+    packageSetting=PackageSetting{c216967 com.android.launcher3/10056}
+
+Registered ContentProviders:
+  com.android.launcher3/.LauncherProvider:
+    Provider{b5651b2 com.android.launcher3/.LauncherProvider}
+
+ContentProvider Authorities:
+  [com.android.launcher3.settings]:
+    Provider{b5651b2 com.android.launcher3/.LauncherProvider}
+      applicationInfo=ApplicationInfo{2513503 com.android.launcher3}
+
+Key Set Manager:
+  [com.android.launcher3]
+      Signing KeySets: 3
+
+Packages:
+  Package [com.android.launcher3] (c216967):
+    userId=10056
+    pkg=Package{e0cac80 com.android.launcher3}
+    codePath=/system/app/Launcher3
+    resourcePath=/system/app/Launcher3
+    legacyNativeLibraryDir=/system/app/Launcher3/lib
+    primaryCpuAbi=null
+    secondaryCpuAbi=null
+    versionCode=25 minSdk=21 targetSdk=23
+    versionName=7.1.1
+    splits=[base]
+    apkSigningVersion=2
+    applicationInfo=ApplicationInfo{2513503 com.android.launcher3}
+    flags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION ]
+    dataDir=/data/user/0/com.android.launcher3
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    timeStamp=2021-03-02 03:28:35
+    firstInstallTime=2021-03-02 03:28:35
+    lastUpdateTime=2021-03-02 03:28:35
+    signatures=PackageSignatures{2f4a2b9 [a55014af]}
+    installPermissionsFixed=true installStatus=1
+    pkgFlags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION ]
+    declared permissions:
+      com.android.launcher3.permission.READ_SETTINGS: prot=normal, INSTALLED
+      com.android.launcher3.permission.WRITE_SETTINGS: prot=signature|privileged, INSTALLED
+      com.android.launcher.permission.INSTALL_SHORTCUT: prot=dangerous
+    requested permissions:
+      com.android.launcher.permission.READ_SETTINGS
+      com.android.launcher.permission.WRITE_SETTINGS
+      com.android.launcher3.permission.READ_SETTINGS
+      com.android.launcher3.permission.WRITE_SETTINGS
+      android.permission.CALL_PHONE
+      android.permission.SET_WALLPAPER
+      android.permission.SET_WALLPAPER_HINTS
+      android.permission.BIND_APPWIDGET
+      android.permission.READ_EXTERNAL_STORAGE
+      android.permission.RECEIVE_BOOT_COMPLETED
+    install permissions:
+      com.android.launcher3.permission.READ_SETTINGS: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      com.android.launcher3.permission.WRITE_SETTINGS: granted=true
+      android.permission.SET_WALLPAPER: granted=true
+      android.permission.SET_WALLPAPER_HINTS: granted=true
+    User 0: ceDataInode=517010 installed=true hidden=false suspended=false stopped=false notLaunched=false enabled=0
+      runtime permissions:
+
+
+Dexopt state:
+  [com.android.launcher3]
+    Instruction Set: arm
+      path: /system/app/Launcher3/Launcher3.apk
+      status: /data/dalvik-cache/arm/system@app@Launcher3@Launcher3.apk@classes.dex [compilation_filter=speed-profile, s
+      tatus=kOatUpToDate]
+
+
+Compiler stats:
+  [com.android.launcher3]
+     Launcher3.apk - 457
+root@PD5:/ # 

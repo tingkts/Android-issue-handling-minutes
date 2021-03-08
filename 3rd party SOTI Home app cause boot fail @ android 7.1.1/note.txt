@@ -1,0 +1,109 @@
+
+Issue: 3rd party app SOTI, set as the default Home launcher, then boot will fail.
+
+
+Root Cause: 
+
+	01-14 05:37:00.762   518   540 I am_wtf  : [0,518,system_server,-1,ActivityManager,No home screen found for Intent { act=android.intent.action.MAIN cat=[android.intent.category.HOME] flg=0x100 }]
+	
+	
+Summary:
+
+	During the boot process, Home intent parsing will go through twice,
+
+	The first stage: PackageManger flag is MATCH_DIRECT_BOOT_AWARE
+
+		Only the Home intent which package/activity is declared as directBootAware can be viewed as the valid Home intent. 
+		Android default is com.android.settings/.FallbackHome, its the dummy Home app , as the first resumed app, in order to confirm that system boot progress is reached to "User Unlocked" phase.
+		
+
+	The second stage: PackageManger flag is MATCH_DIRECT_BOOT_AWARE | MATCH_DIRECT_BOOT_UNAWARE
+
+		At this time, all Home intents can be enumerated. The Android default is com.android.launcher3/.Launcher.
+
+
+
+	And this SOTI can’t boot issue is because the Home intent of SOTI package is not declared directBootAware, and it disables the com.android.settings package, 
+	so the systhem can't find any directBootAware Home intent, and so the boot process can only stay in the first stage. 
+
+
+
+Call Stack Hierarchy:
+
+	ActivityManagerService  boolean startHomeActivityLocked(int userId, String reason) {
+
+		ActivityManagerService  private ActivityInfo resolveActivityInfo(Intent intent, int flags, int userId) {
+		
+			PackageManagerService  public ResolveInfo resolveIntent(Intent intent, String resolvedType,
+										   int flags, int userId) {
+			
+				PackageManagerService	private @NonNull List<ResolveInfo> queryIntentActivitiesInternal(Intent intent,
+												String resolvedType, int flags, int userId) {
+												
+					 flags = updateFlagsForResolve(flags, userId, intent);
+
+					result = filterIfNotSystemUser(mActivities.queryIntent(
+							intent, resolvedType, flags, userId), userId);	
+
+						PackageManagerService.ActivityIntentResolver  public List<ResolveInfo> queryIntent(Intent intent, String resolvedType, int flags,
+																			  int userId) {
+						IntentResolver  public List<R> queryIntent(Intent intent, String resolvedType, boolean defaultOnly,
+												int userId) {
+												
+							IntentResolver  private void buildResolveList(Intent intent, FastImmutableArraySet<String> categories,
+									boolean debug, boolean defaultOnly,
+									String resolvedType, String scheme, F[] src, List<R> dest, int userId) {
+
+								match = filter.match(action, resolvedType, scheme, data, categories, TAG);
+								
+								final R oneResult = newResult(filter, match, userId);							
+								PackageManagerService.ActivityIntentResolver  protected ResolveInfo newResult(PackageParser.ActivityIntentInfo info,
+										int match, int userId) {							
+								
+									if (!mSettings.isEnabledAndMatchLPr(info.activity.info, mFlags, userId)) {
+									
+										return userState.isMatch(componentInfo, flags);
+										
+										PackageUserState  public boolean isMatch(ComponentInfo componentInfo, int flags) {
+											if (!isInstalled(flags)) {
+												return false;
+											}
+											if (!isEnabled(componentInfo, flags)) {
+												return false;
+											}
+
+											if ((flags & MATCH_SYSTEM_ONLY) != 0) {
+												if (!componentInfo.applicationInfo.isSystemApp()) {
+													return false;
+												}
+											}
+
+											final boolean matchesUnaware = ((flags & MATCH_DIRECT_BOOT_UNAWARE) != 0)
+													&& !componentInfo.directBootAware;
+											final boolean matchesAware = ((flags & MATCH_DIRECT_BOOT_AWARE) != 0)
+													&& componentInfo.directBootAware;
+
+											return matchesUnaware || matchesAware;
+										}
+										
+										
+		ref. 
+		
+			PackageManagerService  private int updateFlags(int flags, int userId) {
+				if ((flags & (PackageManager.MATCH_DIRECT_BOOT_UNAWARE
+						| PackageManager.MATCH_DIRECT_BOOT_AWARE)) != 0) {
+					// Caller expressed an explicit opinion about what encryption
+					// aware/unaware components they want to see, so fall through and
+					// give them what they want
+				} else {
+					// Caller expressed no opinion, so match based on user state
+					if (getUserManagerInternal().isUserUnlockingOrUnlocked(userId)) {
+						flags |= PackageManager.MATCH_DIRECT_BOOT_AWARE | MATCH_DIRECT_BOOT_UNAWARE;
+					} else {
+						flags |= PackageManager.MATCH_DIRECT_BOOT_AWARE;
+					}
+				}
+				return flags;
+			}	
+
+Android 7.1.1		

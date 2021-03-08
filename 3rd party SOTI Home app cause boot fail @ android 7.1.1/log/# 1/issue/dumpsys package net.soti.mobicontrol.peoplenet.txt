@@ -1,0 +1,959 @@
+
+
+
+130|root@PD5:/ # dumpsys package net.soti.mobicontrol.peoplenet                
+Activity Resolver Table:
+  Schemes:
+      soti:
+        2e2dee1 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.auth.SsoTokenReceiver filter c727b92
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "soti"
+          Authority: "enrollment": -1
+          Path: "PatternMatcher{LITERAL: /sso}"
+          AutoVerify=false
+        d87a406 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.newenrollment.ui.components.authentication.webbased.NewEnrollmentAuthenticationCodeReceiverActivity filter cfebe19
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "soti"
+          Authority: "authentication": -1
+          Path: "PatternMatcher{GLOB: /.*}"
+          AutoVerify=false
+
+  Non-Data Actions:
+      net.soti.mobicontrol.peoplenet.REACTIVATE_DEVICE_ADMIN:
+        c7e5c7b net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.ui.ActivateAdminActivity filter f3e6e2e
+          Action: "net.soti.mobicontrol.peoplenet.REACTIVATE_DEVICE_ADMIN"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobicontrol.CHANGE_DEVICE_PASSWORD:
+        19a7155 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.ui.InteractiveChangeDevicePasswordActivity filter 5da1506
+          Action: "net.soti.mobicontrol.CHANGE_DEVICE_PASSWORD"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      android.intent.action.MAIN:
+        d022514 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.startup.SplashActivity filter 4a61d73
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+        2ae11bd net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.startup.SplashLockActivity filter 1a5c430
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.HOME"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+        2b353b2 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.lockdown.kiosk.KioskActivity filter 375c7eb
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.HOME"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+        7870f03 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.lockdown.kiosk.FakeHomeActivity filter 6d1e948
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.HOME"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobicontrol.CREDENTIAL_PASSWORD:
+        aff9e10 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.ui.CredentialStoragePasswordActivity filter 8bb1dcf
+          Action: "net.soti.mobicontrol.CREDENTIAL_PASSWORD"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobicontrol.admin.PASSWORD_DIALOG:
+        6911f28 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.ui.AdminModeDialogActivity filter 4c051f4
+          Action: "net.soti.mobicontrol.admin.PASSWORD_DIALOG"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobicontrol.CONFIGURE_WIFI:
+        96fede6 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.ui.wifi.ApListActivity filter 8e6f7c7
+          Action: "net.soti.mobicontrol.CONFIGURE_WIFI"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobicontrol.ENROLLMENT_KICKOFF_ACTIVITY:
+        8436535 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.common.kickoff.services.EnrollmentKickoffActivity filter 5936d1d
+          Action: "net.soti.mobicontrol.ENROLLMENT_KICKOFF_ACTIVITY"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobicontrol.peoplenet.DISPLAY_TNC:
+        bd1a0da net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.tnc.TcActivity filter b473f3a
+          Action: "net.soti.mobicontrol.peoplenet.DISPLAY_TNC"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobicontrol.VIEW_NOTIFICATIONS:
+        93febd5 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.lockdown.notification.NotificationActivity filter 22473e1
+          Action: "net.soti.mobicontrol.VIEW_NOTIFICATIONS"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobiscan.SCAN_CAMERA:
+        a1dcbc net.soti.mobicontrol.peoplenet/net.soti.mobiscan.ui.camera.CameraActivity filter 3514963
+          Action: "net.soti.mobiscan.SCAN_CAMERA"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobiscan.SCAN_IMAGER:
+        313f8b5 net.soti.mobicontrol.peoplenet/net.soti.mobiscan.ui.scanner.ScannerActivity filter 38a9960
+          Action: "net.soti.mobiscan.SCAN_IMAGER"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobicontrol.peoplenet.DISPLAY_MESSAGE_BOX:
+        f28ebd8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.ui.MessageBoxDialogActivity filter 387d665
+          Action: "net.soti.mobicontrol.peoplenet.DISPLAY_MESSAGE_BOX"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobicontrol.CERTIFICATE_INSTALL:
+        7afe102 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.ui.GenericAndroidCertInstallerActivity filter 7daf35c
+          Action: "net.soti.mobicontrol.CERTIFICATE_INSTALL"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.mobicontrol.peoplenet.DEVICE_ADMIN:
+        c7e5c7b net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.ui.ActivateAdminActivity filter 27b58a9
+          Action: "net.soti.mobicontrol.peoplenet.DEVICE_ADMIN"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+      net.soti.record.ACTION_PLAYBACK_VERIFY:
+        3d1e8f6 net.soti.mobicontrol.peoplenet/net.soti.record.PlaybackActivity filter 6b8bede
+          Action: "net.soti.record.ACTION_PLAYBACK_VERIFY"
+          AutoVerify=false
+
+Receiver Resolver Table:
+  Full MIME Types:
+      raw/mobicontrol-ms-provisioning:
+        8e98f8a net.soti.mobicontrol.peoplenet/net.soti.mobiscan.provisioning.AgentRawProvisioningBroadcastReceiver filter a4885f5
+          Action: "net.soti.mobicontrol.action.PROVISIONING_ACTION"
+          Category: "net.soti.mobicontrol.category.PROVISIONING"
+          Type: "raw/mobicontrol-ms-provisioning"
+          AutoVerify=false
+
+  Base MIME Types:
+      raw:
+        8e98f8a net.soti.mobicontrol.peoplenet/net.soti.mobiscan.provisioning.AgentRawProvisioningBroadcastReceiver filter a4885f5
+          Action: "net.soti.mobicontrol.action.PROVISIONING_ACTION"
+          Category: "net.soti.mobicontrol.category.PROVISIONING"
+          Type: "raw/mobicontrol-ms-provisioning"
+          AutoVerify=false
+
+  Schemes:
+      package:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter 356a97e
+          Action: "android.intent.action.PACKAGE_REPLACED"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Action: "android.intent.action.PACKAGE_REMOVED"
+          Action: "android.intent.action.PACKAGE_CHANGED"
+          Scheme: "package"
+          AutoVerify=false
+        242e6c1 net.soti.mobicontrol.peoplenet/com.google.android.apps.work.dpcsupport.AccountManagementWhitelistEnforcer$ContinuousEnforcer filter cb46a56
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Action: "android.intent.action.PACKAGE_CHANGED"
+          Scheme: "package"
+          AutoVerify=false
+      file:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter b4d2f39
+          Action: "android.intent.action.MEDIA_MOUNTED"
+          Action: "android.intent.action.MEDIA_UNMOUNTED"
+          Action: "android.intent.action.MEDIA_SCANNER_FINISHED"
+          Scheme: "file"
+          AutoVerify=false
+
+  Non-Data Actions:
+      android.app.action.PROFILE_PROVISIONING_COMPLETE:
+        69a5c02 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.admin.DeviceAdminAdapter filter 118fc32
+          Action: "android.app.action.DEVICE_ADMIN_ENABLED"
+          Action: "net.soti.mobicontrol.DEVICE_ADMIN_ENABLED_INTERNAL"
+          Action: "android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED"
+          Action: "android.app.action.PROFILE_PROVISIONING_COMPLETE"
+          AutoVerify=false
+      android.intent.action.ACTION_POWER_DISCONNECTED:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter 8febedf
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+          Action: "android.hardware.usb.action.USB_STATE"
+          AutoVerify=false
+      android.net.wifi.WIFI_STATE_CHANGED:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter a759b00
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SIG_STR"
+          Action: "android.intent.action.SIM_STATE_CHANGED"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.RSSI_CHANGED"
+          Action: "android.net.wifi.WIFI_STATE_CHANGED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.intent.action.ACTION_SHUTDOWN"
+          AutoVerify=false
+      android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED:
+        69a5c02 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.admin.DeviceAdminAdapter filter 118fc32
+          Action: "android.app.action.DEVICE_ADMIN_ENABLED"
+          Action: "net.soti.mobicontrol.DEVICE_ADMIN_ENABLED_INTERNAL"
+          Action: "android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED"
+          Action: "android.app.action.PROFILE_PROVISIONING_COMPLETE"
+          AutoVerify=false
+      android.intent.action.QUICKBOOT_POWERON:
+        40c1257 net.soti.mobicontrol.peoplenet/com.evernote.android.job.JobBootReceiver filter 9688c71
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.QUICKBOOT_POWERON"
+          Action: "com.htc.intent.action.QUICKBOOT_POWERON"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          AutoVerify=false
+      com.bd.android.shared.action.SDK_LICENSE:
+        49039e5 net.soti.mobicontrol.peoplenet/com.bd.android.shared.AlarmReceiver filter 83f6fc4
+          Action: "com.bd.android.shared.action.SDK_LICENSE"
+          AutoVerify=false
+      com.bd.android.shared.sdk.intent.ACTION_APPLOCK_PIN_UPDATE:
+        b8cdac2 net.soti.mobicontrol.peoplenet/com.bd.android.shared.DelayedActionsReceiver filter 5bbaad7
+          Action: "com.bd.android.shared.sdk.intent.ACTION_APPLOCK_PIN_UPDATE"
+          mPriority=2147483647, mHasPartialTypes=false
+          AutoVerify=false
+      com.htc.intent.action.QUICKBOOT_POWERON:
+        40c1257 net.soti.mobicontrol.peoplenet/com.evernote.android.job.JobBootReceiver filter 9688c71
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.QUICKBOOT_POWERON"
+          Action: "com.htc.intent.action.QUICKBOOT_POWERON"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          AutoVerify=false
+      android.intent.action.PHONE_STATE:
+        5c3472f net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.phone.PhoneCallReceiver filter 219672c
+          Action: "android.intent.action.NEW_OUTGOING_CALL"
+          Action: "android.intent.action.PHONE_STATE"
+          AutoVerify=false
+      android.net.conn.CONNECTIVITY_CHANGE:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter a759b00
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SIG_STR"
+          Action: "android.intent.action.SIM_STATE_CHANGED"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.RSSI_CHANGED"
+          Action: "android.net.wifi.WIFI_STATE_CHANGED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.intent.action.ACTION_SHUTDOWN"
+          AutoVerify=false
+      android.intent.action.LOCKED_BOOT_COMPLETED:
+        4e5df1e net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.directboot.LockedBootBroadcastReceiver filter a2fdf8a
+          Action: "android.intent.action.LOCKED_BOOT_COMPLETED"
+          AutoVerify=false
+      android.app.action.DEVICE_ADMIN_ENABLED:
+        69a5c02 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.admin.DeviceAdminAdapter filter 118fc32
+          Action: "android.app.action.DEVICE_ADMIN_ENABLED"
+          Action: "net.soti.mobicontrol.DEVICE_ADMIN_ENABLED_INTERNAL"
+          Action: "android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED"
+          Action: "android.app.action.PROFILE_PROVISIONING_COMPLETE"
+          AutoVerify=false
+      com.bd.connect.subscription.action.CHECK_SUBSCRIPTION:
+        6d862c4 net.soti.mobicontrol.peoplenet/com.bd.android.connect.subscriptions.AlarmReceiver filter ca87ead
+          Action: "com.bd.connect.subscription.action.CHECK_SUBSCRIPTION"
+          AutoVerify=false
+      android.hardware.usb.action.USB_STATE:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter 8febedf
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+          Action: "android.hardware.usb.action.USB_STATE"
+          AutoVerify=false
+      android.net.wifi.RSSI_CHANGED:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter a759b00
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SIG_STR"
+          Action: "android.intent.action.SIM_STATE_CHANGED"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.RSSI_CHANGED"
+          Action: "android.net.wifi.WIFI_STATE_CHANGED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.intent.action.ACTION_SHUTDOWN"
+          AutoVerify=false
+      android.intent.action.SIM_STATE_CHANGED:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter a759b00
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SIG_STR"
+          Action: "android.intent.action.SIM_STATE_CHANGED"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.RSSI_CHANGED"
+          Action: "android.net.wifi.WIFI_STATE_CHANGED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.intent.action.ACTION_SHUTDOWN"
+          AutoVerify=false
+      android.intent.action.SIG_STR:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter a759b00
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SIG_STR"
+          Action: "android.intent.action.SIM_STATE_CHANGED"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.RSSI_CHANGED"
+          Action: "android.net.wifi.WIFI_STATE_CHANGED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.intent.action.ACTION_SHUTDOWN"
+          AutoVerify=false
+      com.google.android.c2dm.intent.RECEIVE:
+        bb403e4 net.soti.mobicontrol.peoplenet/com.google.firebase.iid.FirebaseInstanceIdReceiver filter 124d5e2
+          Action: "com.google.android.c2dm.intent.RECEIVE"
+          AutoVerify=false
+      com.evernote.android.job.v14.RUN_JOB:
+        dfb55e0 net.soti.mobicontrol.peoplenet/com.evernote.android.job.v14.PlatformAlarmReceiver filter 74bca18
+          Action: "com.evernote.android.job.v14.RUN_JOB"
+          Action: "net.vrallev.android.job.v14.RUN_JOB"
+          AutoVerify=false
+      android.intent.action.BOOT_COMPLETED:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter a759b00
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SIG_STR"
+          Action: "android.intent.action.SIM_STATE_CHANGED"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.RSSI_CHANGED"
+          Action: "android.net.wifi.WIFI_STATE_CHANGED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.intent.action.ACTION_SHUTDOWN"
+          AutoVerify=false
+        40c1257 net.soti.mobicontrol.peoplenet/com.evernote.android.job.JobBootReceiver filter 9688c71
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.QUICKBOOT_POWERON"
+          Action: "com.htc.intent.action.QUICKBOOT_POWERON"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          AutoVerify=false
+      android.intent.action.USER_PRESENT:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter a759b00
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SIG_STR"
+          Action: "android.intent.action.SIM_STATE_CHANGED"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.RSSI_CHANGED"
+          Action: "android.net.wifi.WIFI_STATE_CHANGED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.intent.action.ACTION_SHUTDOWN"
+          AutoVerify=false
+      android.intent.action.ACTION_POWER_CONNECTED:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter 8febedf
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+          Action: "android.hardware.usb.action.USB_STATE"
+          AutoVerify=false
+      android.provider.Telephony.SMS_RECEIVED:
+        759d2d2 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.SmsReceiver filter 526cd83
+          Action: "android.provider.Telephony.SMS_RECEIVED"
+          mPriority=100, mHasPartialTypes=false
+          AutoVerify=false
+      com.symbol.mxmf.intent.MX_FRAMEWORK_SERVICE_IS_READY:
+        e429715 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.xmlstage.ZebraMXMFReadyReceiver filter b3a69fb
+          Action: "com.symbol.mxmf.intent.MX_FRAMEWORK_SERVICE_IS_READY"
+          AutoVerify=false
+      android.intent.action.MY_PACKAGE_REPLACED:
+        40c1257 net.soti.mobicontrol.peoplenet/com.evernote.android.job.JobBootReceiver filter 9688c71
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.QUICKBOOT_POWERON"
+          Action: "com.htc.intent.action.QUICKBOOT_POWERON"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          AutoVerify=false
+      android.intent.action.NEW_OUTGOING_CALL:
+        5c3472f net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.phone.PhoneCallReceiver filter 219672c
+          Action: "android.intent.action.NEW_OUTGOING_CALL"
+          Action: "android.intent.action.PHONE_STATE"
+          AutoVerify=false
+      android.intent.action.ACTION_SHUTDOWN:
+        a28dba8 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.broadcastreceiver.DelayedBroadcastReceiver filter a759b00
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SIG_STR"
+          Action: "android.intent.action.SIM_STATE_CHANGED"
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+          Action: "android.net.wifi.RSSI_CHANGED"
+          Action: "android.net.wifi.WIFI_STATE_CHANGED"
+          Action: "android.intent.action.USER_PRESENT"
+          Action: "android.intent.action.ACTION_SHUTDOWN"
+          AutoVerify=false
+      net.soti.mobicontrol.DEVICE_ADMIN_ENABLED_INTERNAL:
+        69a5c02 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.admin.DeviceAdminAdapter filter 118fc32
+          Action: "android.app.action.DEVICE_ADMIN_ENABLED"
+          Action: "net.soti.mobicontrol.DEVICE_ADMIN_ENABLED_INTERNAL"
+          Action: "android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED"
+          Action: "android.app.action.PROFILE_PROVISIONING_COMPLETE"
+          AutoVerify=false
+      net.vrallev.android.job.v14.RUN_JOB:
+        dfb55e0 net.soti.mobicontrol.peoplenet/com.evernote.android.job.v14.PlatformAlarmReceiver filter 74bca18
+          Action: "com.evernote.android.job.v14.RUN_JOB"
+          Action: "net.vrallev.android.job.v14.RUN_JOB"
+          AutoVerify=false
+
+  MIME Typed Actions:
+      net.soti.mobicontrol.action.PROVISIONING_ACTION:
+        8e98f8a net.soti.mobicontrol.peoplenet/net.soti.mobiscan.provisioning.AgentRawProvisioningBroadcastReceiver filter a4885f5
+          Action: "net.soti.mobicontrol.action.PROVISIONING_ACTION"
+          Category: "net.soti.mobicontrol.category.PROVISIONING"
+          Type: "raw/mobicontrol-ms-provisioning"
+          AutoVerify=false
+
+Service Resolver Table:
+  Non-Data Actions:
+      com.android.vending.dpc.APPLICATION_RESTRICTIONS_PROXY:
+        3e855d6 net.soti.mobicontrol.peoplenet/com.google.android.apps.work.dpcsupport.ManagedConfigurationsProxy filter 2066101
+          Action: "com.android.vending.dpc.APPLICATION_RESTRICTIONS_PROXY"
+          AutoVerify=false
+      net.soti.record.PAUSE:
+        95a19e6 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.remotecontrol.screenrecording.ScreenRecordingService filter 27b680b
+          Action: "net.soti.record.START"
+          Action: "net.soti.record.PAUSE"
+          Action: "net.soti.record.RESUME"
+          Action: "net.soti.record.STOP"
+          AutoVerify=false
+        d254b27 net.soti.mobicontrol.peoplenet/net.soti.record.RecordingService filter 6f70c3d
+          Action: "net.soti.record.START"
+          Action: "net.soti.record.PAUSE"
+          Action: "net.soti.record.RESUME"
+          Action: "net.soti.record.STOP"
+          AutoVerify=false
+      net.soti.record.START:
+        95a19e6 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.remotecontrol.screenrecording.ScreenRecordingService filter 27b680b
+          Action: "net.soti.record.START"
+          Action: "net.soti.record.PAUSE"
+          Action: "net.soti.record.RESUME"
+          Action: "net.soti.record.STOP"
+          AutoVerify=false
+        d254b27 net.soti.mobicontrol.peoplenet/net.soti.record.RecordingService filter 6f70c3d
+          Action: "net.soti.record.START"
+          Action: "net.soti.record.PAUSE"
+          Action: "net.soti.record.RESUME"
+          Action: "net.soti.record.STOP"
+          AutoVerify=false
+      com.google.android.gms.gcm.ACTION_TASK_READY:
+        351c3dd net.soti.mobicontrol.peoplenet/com.evernote.android.job.gcm.PlatformGcmService filter bc0d6e8
+          Action: "com.google.android.gms.gcm.ACTION_TASK_READY"
+          AutoVerify=false
+        d6beb52 net.soti.mobicontrol.peoplenet/com.bd.android.connect.scheduler.BDTaskService filter 60bcba6
+          Action: "com.google.android.gms.gcm.ACTION_TASK_READY"
+          AutoVerify=false
+      com.google.firebase.MESSAGING_EVENT:
+        9348b net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.fcm.FirebaseService filter 99ccbda
+          Action: "com.google.firebase.MESSAGING_EVENT"
+          AutoVerify=false
+        6fe968 net.soti.mobicontrol.peoplenet/com.bd.android.connect.push.PushService filter 37679e7
+          Action: "com.google.firebase.MESSAGING_EVENT"
+          AutoVerify=false
+        7344181 net.soti.mobicontrol.peoplenet/com.google.firebase.messaging.FirebaseMessagingService filter 2407994
+          Action: "com.google.firebase.MESSAGING_EVENT"
+          mPriority=-500, mHasPartialTypes=false
+          AutoVerify=false
+      net.soti.record.RESUME:
+        95a19e6 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.remotecontrol.screenrecording.ScreenRecordingService filter 27b680b
+          Action: "net.soti.record.START"
+          Action: "net.soti.record.PAUSE"
+          Action: "net.soti.record.RESUME"
+          Action: "net.soti.record.STOP"
+          AutoVerify=false
+        d254b27 net.soti.mobicontrol.peoplenet/net.soti.record.RecordingService filter 6f70c3d
+          Action: "net.soti.record.START"
+          Action: "net.soti.record.PAUSE"
+          Action: "net.soti.record.RESUME"
+          Action: "net.soti.record.STOP"
+          AutoVerify=false
+      android.view.InputMethod:
+        c4119f3 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.remotecontrol.UnicodeCharInjector filter cb846fc
+          Action: "android.view.InputMethod"
+          AutoVerify=false
+      android.service.notification.NotificationListenerService:
+        f53aa40 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.notification.SotiStatusBarNotificationListenerService filter 2ff3185
+          Action: "android.service.notification.NotificationListenerService"
+          AutoVerify=false
+      net.soti.record.STOP:
+        95a19e6 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.remotecontrol.screenrecording.ScreenRecordingService filter 27b680b
+          Action: "net.soti.record.START"
+          Action: "net.soti.record.PAUSE"
+          Action: "net.soti.record.RESUME"
+          Action: "net.soti.record.STOP"
+          AutoVerify=false
+        d254b27 net.soti.mobicontrol.peoplenet/net.soti.record.RecordingService filter 6f70c3d
+          Action: "net.soti.record.START"
+          Action: "net.soti.record.PAUSE"
+          Action: "net.soti.record.RESUME"
+          Action: "net.soti.record.STOP"
+          AutoVerify=false
+      net.soti.mobicontrol.peoplenet.START_SERVICE:
+        9250aad net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.MobiControlService filter e70fbef
+          Action: "net.soti.mobicontrol.peoplenet.START_SERVICE"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+
+Preferred Activities User 0:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        cdbd63e net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.lockdown.kiosk.KioskActivity
+         mMatch=0x100000 mAlways=true
+          Selected from:
+            PMobile.Android/com.domain.pmobile.mainactivity
+            net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.lockdown.kiosk.KioskActivity
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.HOME"
+          Category: "android.intent.category.DEFAULT"
+          AutoVerify=false
+
+Permissions:
+  Permission [net.soti.mobicontrol.permission.DEVICE_INFO] (70c5010):
+    sourcePackage=net.soti.mobicontrol.peoplenet
+    uid=10078 gids=null type=0 prot=normal
+    perm=Permission{d032709 net.soti.mobicontrol.permission.DEVICE_INFO}
+    packageSetting=PackageSetting{a138bdb net.soti.mobicontrol.peoplenet/10078}
+  Permission [net.soti.mobicontrol.permission.CLEAR_DATA] (ffce325):
+    sourcePackage=net.soti.mobicontrol.peoplenet
+    uid=10078 gids=null type=0 prot=dangerous
+    perm=Permission{f802cfa net.soti.mobicontrol.permission.CLEAR_DATA}
+    packageSetting=PackageSetting{a138bdb net.soti.mobicontrol.peoplenet/10078}
+  Permission [net.soti.mobicontrol.permission.GET_DATA] (61d9989):
+    sourcePackage=net.soti.mobicontrol.peoplenet
+    uid=10078 gids=null type=0 prot=dangerous
+    perm=Permission{8584d8e net.soti.mobicontrol.permission.GET_DATA}
+    packageSetting=PackageSetting{a138bdb net.soti.mobicontrol.peoplenet/10078}
+  Permission [net.soti.mobicontrol.permission.DATA_COLLECTOR] (1f1f0c1):
+    sourcePackage=net.soti.mobicontrol.peoplenet
+    uid=10078 gids=null type=0 prot=normal
+    perm=Permission{1a48066 net.soti.mobicontrol.permission.DATA_COLLECTOR}
+    packageSetting=PackageSetting{a138bdb net.soti.mobicontrol.peoplenet/10078}
+  Permission [net.soti.mobicontrol.permission.FILE_CONTENT] (35d3b9f):
+    sourcePackage=net.soti.mobicontrol.peoplenet
+    uid=10078 gids=null type=0 prot=normal
+    perm=Permission{2d704ec net.soti.mobicontrol.permission.FILE_CONTENT}
+    packageSetting=PackageSetting{a138bdb net.soti.mobicontrol.peoplenet/10078}
+  Permission [net.soti.mobicontrol.peoplenet.permission.C2D_MESSAGE] (a57915e):
+    sourcePackage=net.soti.mobicontrol.peoplenet
+    uid=10078 gids=null type=0 prot=signature
+    perm=Permission{247b93f net.soti.mobicontrol.peoplenet.permission.C2D_MESSAGE}
+    packageSetting=PackageSetting{a138bdb net.soti.mobicontrol.peoplenet/10078}
+  Permission [net.soti.mobicontrol.permission.MDM_PROVISIONING] (7ee1345):
+    sourcePackage=net.soti.mobicontrol.peoplenet
+    uid=10078 gids=null type=0 prot=signature|privileged
+    perm=Permission{69b6a9a net.soti.mobicontrol.permission.MDM_PROVISIONING}
+    packageSetting=PackageSetting{a138bdb net.soti.mobicontrol.peoplenet/10078}
+  Permission [net.soti.mobicontrol.permission.MIGRATION] (69e3402):
+    sourcePackage=net.soti.mobicontrol.peoplenet
+    uid=10078 gids=null type=0 prot=normal
+    perm=Permission{c0f113 net.soti.mobicontrol.permission.MIGRATION}
+    packageSetting=PackageSetting{a138bdb net.soti.mobicontrol.peoplenet/10078}
+  Permission [net.soti.mobicontrol.peoplenet.permission.RECEIVE_ALARMS] (9076d4f):
+    sourcePackage=net.soti.mobicontrol.peoplenet
+    uid=10078 gids=null type=0 prot=signature
+    perm=Permission{591ccdc net.soti.mobicontrol.peoplenet.permission.RECEIVE_ALARMS}
+    packageSetting=PackageSetting{a138bdb net.soti.mobicontrol.peoplenet/10078}
+
+Registered ContentProviders:
+  net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.migration.MigrationDataProvider:
+    Provider{5fefb3d net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.migration.MigrationDataProvider}
+  net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.apiservice.ClearDataContentProvider:
+    Provider{1959600 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.apiservice.ClearDataContentProvider}
+  net.soti.mobicontrol.peoplenet/net.soti.securecontentlibrary.DeviceInformationProvider:
+    Provider{c0e58e2 net.soti.mobicontrol.peoplenet/net.soti.securecontentlibrary.DeviceInformationProvider}
+  net.soti.mobicontrol.peoplenet/androidx.lifecycle.ProcessLifecycleOwnerInitializer:
+    Provider{cca31de net.soti.mobicontrol.peoplenet/androidx.lifecycle.ProcessLifecycleOwnerInitializer}
+  net.soti.mobicontrol.peoplenet/androidx.core.content.FileProvider:
+    Provider{ed646a8 net.soti.mobicontrol.peoplenet/androidx.core.content.FileProvider}
+  net.soti.mobicontrol.peoplenet/net.soti.securecontentlibrary.DataCollectorContentProvider:
+    Provider{28eabee net.soti.mobicontrol.peoplenet/net.soti.securecontentlibrary.DataCollectorContentProvider}
+  net.soti.mobicontrol.peoplenet/net.soti.externalcommunication.SandboxFileProvider:
+    Provider{3354b81 net.soti.mobicontrol.peoplenet/net.soti.externalcommunication.SandboxFileProvider}
+  net.soti.mobicontrol.peoplenet/net.soti.securecontentlibrary.FileContentProvider:
+    Provider{178a426 net.soti.mobicontrol.peoplenet/net.soti.securecontentlibrary.FileContentProvider}
+
+ContentProvider Authorities:
+  [net.soti.mobicontrol.dataCollector]:
+    Provider{28eabee net.soti.mobicontrol.peoplenet/net.soti.securecontentlibrary.DataCollectorContentProvider}
+      applicationInfo=ApplicationInfo{9cf7c6c net.soti.mobicontrol.peoplenet}
+  [net.soti.mobicontrol.peoplenet.lifecycle-process]:
+    Provider{cca31de net.soti.mobicontrol.peoplenet/androidx.lifecycle.ProcessLifecycleOwnerInitializer}
+      applicationInfo=ApplicationInfo{9cf7c6c net.soti.mobicontrol.peoplenet}
+  [net.soti.mobicontrol.fileContent]:
+    Provider{178a426 net.soti.mobicontrol.peoplenet/net.soti.securecontentlibrary.FileContentProvider}
+      applicationInfo=ApplicationInfo{9cf7c6c net.soti.mobicontrol.peoplenet}
+  [net.soti.mobicontrol.peoplenet]:
+    Provider{ed646a8 net.soti.mobicontrol.peoplenet/androidx.core.content.FileProvider}
+      applicationInfo=ApplicationInfo{9cf7c6c net.soti.mobicontrol.peoplenet}
+  [net.soti.mobicontrol.deviceInfo]:
+    Provider{c0e58e2 net.soti.mobicontrol.peoplenet/net.soti.securecontentlibrary.DeviceInformationProvider}
+      applicationInfo=ApplicationInfo{9cf7c6c net.soti.mobicontrol.peoplenet}
+  [net.soti.mobicontrol.clearData]:
+    Provider{1959600 net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.apiservice.ClearDataContentProvider}
+      applicationInfo=ApplicationInfo{9cf7c6c net.soti.mobicontrol.peoplenet}
+  [net.soti.mobicontrol.getData]:
+    Provider{3354b81 net.soti.mobicontrol.peoplenet/net.soti.externalcommunication.SandboxFileProvider}
+      applicationInfo=ApplicationInfo{9cf7c6c net.soti.mobicontrol.peoplenet}
+  [net.soti.mobicontrol.migration]:
+    Provider{5fefb3d net.soti.mobicontrol.peoplenet/net.soti.mobicontrol.migration.MigrationDataProvider}
+      applicationInfo=ApplicationInfo{9cf7c6c net.soti.mobicontrol.peoplenet}
+
+Key Set Manager:
+  [net.soti.mobicontrol.peoplenet]
+      Signing KeySets: 1
+
+Packages:
+  Package [net.soti.mobicontrol.peoplenet] (a138bdb):
+    userId=10078
+    sharedUser=SharedUserSetting{3b85349 net.soti.mobicontrol.peoplenet.shared/10078}
+    pkg=Package{251e44e net.soti.mobicontrol.peoplenet}
+    codePath=/data/app/net.soti.mobicontrol.peoplenet-2
+    resourcePath=/data/app/net.soti.mobicontrol.peoplenet-2
+    legacyNativeLibraryDir=/data/app/net.soti.mobicontrol.peoplenet-2/lib
+    primaryCpuAbi=armeabi-v7a
+    secondaryCpuAbi=null
+    versionCode=141801111 minSdk=17 targetSdk=28
+    versionName=14.1.8 Build 1111
+    splits=[base]
+    apkSigningVersion=1
+    applicationInfo=ApplicationInfo{9cf7c6c net.soti.mobicontrol.peoplenet}
+    flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ]
+    privateFlags=[ PARTIALLY_DIRECT_BOOT_AWARE RESIZEABLE_ACTIVITIES ]
+    dataDir=/data/user/0/net.soti.mobicontrol.peoplenet
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    usesOptionalLibraries:
+      com.lge.mdm
+      com.datalogic.device
+    timeStamp=2020-11-12 11:51:19
+    firstInstallTime=2020-09-28 12:14:49
+    lastUpdateTime=2020-11-12 11:51:49
+    installerPackageName=net.soti.mobicontrol.peoplenet
+    signatures=PackageSignatures{2c2296f [6d85ea0]}
+    installPermissionsFixed=true installStatus=1
+    pkgFlags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ]
+    declared permissions:
+      net.soti.mobicontrol.peoplenet.permission.C2D_MESSAGE: prot=signature, INSTALLED
+      net.soti.mobicontrol.peoplenet.permission.RECEIVE_ALARMS: prot=signature, INSTALLED
+      net.soti.mobicontrol.permission.MDM_PROVISIONING: prot=signature|privileged, INSTALLED
+      net.soti.mobicontrol.permission.DEVICE_INFO: prot=normal, INSTALLED
+      net.soti.mobicontrol.permission.FILE_CONTENT: prot=normal, INSTALLED
+      net.soti.mobicontrol.permission.DATA_COLLECTOR: prot=normal, INSTALLED
+      net.soti.mobicontrol.permission.GET_DATA: prot=dangerous, INSTALLED
+      net.soti.mobicontrol.permission.CLEAR_DATA: prot=dangerous, INSTALLED
+      net.soti.mobicontrol.permission.MIGRATION: prot=normal, INSTALLED
+    requested permissions:
+      android.permission.ANSWER_PHONE_CALLS
+      android.permission.READ_PRIVILEGED_PHONE_STATE
+      android.permission.BLUETOOTH
+      android.permission.BLUETOOTH_ADMIN
+      android.permission.CAMERA
+      android.permission.MODIFY_AUDIO_SETTINGS
+      android.permission.MODIFY_PHONE_STATE
+      android.permission.CHANGE_COMPONENT_ENABLED_STATE
+      android.permission.NFC
+      android.permission.WRITE_SECURE_SETTINGS
+      android.permission.WRITE_SETTINGS
+      android.permission.MANAGE_NETWORK_POLICY
+      android.permission.MODIFY_NETWORK_ACCOUNTING
+      android.permission.READ_NETWORK_USAGE_HISTORY
+      android.permission.CONNECTIVITY_INTERNAL
+      android.permission.CHANGE_BACKGROUND_DATA_SETTING
+      android.permission.MANAGE_USB
+      android.permission.BACKUP
+      android.permission.BIND_DEVICE_ADMIN
+      android.permission.GET_TASKS
+      android.permission.VIBRATE
+      android.permission.INTERNET
+      android.permission.READ_CONTACTS
+      android.permission.READ_CALL_LOG
+      android.permission.READ_PHONE_STATE
+      android.permission.FOREGROUND_SERVICE
+      android.permission.INJECT_EVENTS
+      android.permission.READ_FRAME_BUFFER
+      android.permission.ACCESS_SURFACE_FLINGER
+      android.permission.GET_PACKAGE_SIZE
+      android.permission.FORCE_STOP_PACKAGES
+      android.permission.CLEAR_APP_USER_DATA
+      android.permission.REBOOT
+      android.permission.SHUTDOWN
+      android.permission.SET_TIME
+      android.permission.SET_TIME_ZONE
+      android.permission.READ_EXTERNAL_STORAGE
+      android.permission.WRITE_EXTERNAL_STORAGE
+      android.permission.WRITE_MEDIA_STORAGE
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.ACCESS_WIFI_STATE
+      android.permission.CHANGE_WIFI_STATE
+      android.permission.OVERRIDE_WIFI_CONFIG
+      android.permission.ACCESS_FINE_LOCATION
+      android.permission.WRITE_APN_SETTINGS
+      android.permission.RECEIVE_BOOT_COMPLETED
+      android.permission.BATTERY_STATS
+      android.permission.CHANGE_NETWORK_STATE
+      android.permission.WAKE_LOCK
+      android.permission.GET_ACCOUNTS
+      android.permission.INSTALL_PACKAGES
+      android.permission.DELETE_PACKAGES
+      android.permission.CALL_PHONE
+      android.permission.PROCESS_OUTGOING_CALLS
+      android.permission.READ_SYNC_SETTINGS
+      android.permission.WRITE_SYNC_SETTINGS
+      android.permission.EXPAND_STATUS_BAR
+      android.permission.STATUS_BAR
+      android.permission.INTERACT_ACROSS_USERS_FULL
+      android.permission.CHANGE_CONFIGURATION
+      android.permission.MANAGE_USERS
+      android.permission.DEVICE_POWER
+      android.permission.SYSTEM_ALERT_WINDOW
+      android.permission.SET_WALLPAPER
+      android.permission.MANAGE_DEVICE_ADMINS
+      net.soti.mobicontrol.peoplenet.permission.C2D_MESSAGE
+      com.google.android.c2dm.permission.RECEIVE
+      com.android.launcher.permission.INSTALL_SHORTCUT
+      com.android.launcher.permission.UNINSTALL_SHORTCUT
+      android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+      android.permission.MOUNT_FORMAT_FILESYSTEMS
+      android.permission.RESTART_PACKAGES
+      android.permission.KILL_BACKGROUND_PROCESSES
+      android.permission.sec.MDM_APP_MGMT
+      android.permission.sec.MDM_WIFI
+      android.permission.sec.MDM_BLUETOOTH
+      android.permission.sec.MDM_ROAMING
+      android.permission.sec.MDM_HW_CONTROL
+      android.permission.sec.MDM_EXCHANGE
+      android.permission.sec.MDM_APN
+      android.permission.sec.MDM_SECURITY
+      android.permission.sec.MDM_REMOTE_CONTROL
+      android.permission.sec.MDM_RESTRICTION
+      android.permission.sec.MDM_LOCATION
+      android.permission.sec.MDM_EMAIL
+      android.permission.sec.MDM_VPN
+      android.permission.sec.MDM_KIOSK_MODE
+      android.permission.sec.MDM_FIREWALL
+      android.permission.sec.MDM_ENTERPRISE_VPN
+      android.permission.sec.MDM_PHONE_RESTRICTION
+      android.permission.sec.ENTERPRISE_DEVICE_ADMIN
+      android.permission.sec.MDM_DATE_TIME
+      android.permission.sec.MDM_BROWSER_SETTINGS
+      android.permission.sec.MDM_APP_BACKUP
+      android.permission.sec.MDM_LOCKSCREEN
+      com.samsung.android.knox.permission.KNOX_APP_MGMT
+      com.samsung.android.knox.permission.KNOX_WIFI
+      com.samsung.android.knox.permission.KNOX_BLUETOOTH
+      com.samsung.android.knox.permission.KNOX_ROAMING
+      com.samsung.android.knox.permission.KNOX_HW_CONTROL
+      com.samsung.android.knox.permission.KNOX_EXCHANGE
+      com.samsung.android.knox.permission.KNOX_APN
+      com.samsung.android.knox.permission.KNOX_SECURITY
+      com.samsung.android.knox.permission.KNOX_REMOTE_CONTROL
+      com.samsung.android.knox.permission.KNOX_RESTRICTION_MGMT
+      com.samsung.android.knox.permission.KNOX_LOCATION
+      com.samsung.android.knox.permission.KNOX_EMAIL
+      com.samsung.android.knox.permission.KNOX_VPN
+      com.samsung.android.knox.permission.KNOX_KIOSK_MODE
+      com.samsung.android.knox.permission.KNOX_FIREWALL
+      com.samsung.android.knox.permission.KNOX_PHONE_RESTRICTION
+      com.samsung.android.knox.permission.KNOX_ENTERPRISE_DEVICE_ADMIN
+      com.samsung.android.knox.permission.KNOX_DATE_TIME
+      com.samsung.android.knox.permission.KNOX_BROWSER_SETTINGS
+      com.samsung.android.knox.permission.KNOX_LOCKSCREEN
+      com.android.email.permission.ACCESS_PROVIDER
+      net.soti.mobicontrol.password.PASSWORD_OR_POLICY_CHANGED
+      net.soti.mobicontrol.peoplenet.permission.RECEIVE_ALARMS
+      com.google.android.providers.gsf.permission.READ_GSERVICES
+      android.permission.MASTER_CLEAR
+      android.permission.PACKAGE_USAGE_STATS
+      android.permission.ACCESS_KEYGUARD_SECURE_STORAGE
+      android.permission.READ_LOGS
+      android.permission.CRYPT_KEEPER
+      android.permission.GET_APP_OPS_STATS
+      android.permission.UPDATE_APP_OPS_STATS
+      android.permission.MANAGE_APP_OPS_MODES
+      android.permission.SET_PREFERRED_APPLICATIONS
+      android.permission.BROADCAST_STICKY
+      android.permission.REQUEST_INSTALL_PACKAGES
+      android.permission.REQUEST_DELETE_PACKAGES
+      android.permission.AUTHENTICATE_ACCOUNTS
+      android.permission.FLASHLIGHT
+      android.permission.LOCAL_MAC_ADDRESS
+      android.permission.REMOVE_TASKS
+      android.permission.REAL_GET_TASKS
+      android.permission.READ_PROFILE
+      com.huawei.permission.sec.MDM_APP_MANAGEMENT
+      android.permission.READ_SYNC_STATS
+      android.permission.NETWORK_SETTINGS
+      android.permission.DOWNLOAD_WITHOUT_NOTIFICATION
+      android.permission.MANAGE_ACCOUNTS
+      android.permission.RECORD_AUDIO
+      android.permission.TYPE_APPLICATION_OVERLAY
+    install permissions:
+      android.permission.REAL_GET_TASKS: granted=true
+      android.permission.DOWNLOAD_WITHOUT_NOTIFICATION: granted=true
+      android.permission.WRITE_SETTINGS: granted=true
+      com.google.android.c2dm.permission.RECEIVE: granted=true
+      android.permission.RESTART_PACKAGES: granted=true
+      android.permission.BIND_DEVICE_ADMIN: granted=true
+      android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+      android.permission.GET_APP_OPS_STATS: granted=true
+      com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+      android.permission.MANAGE_ACCOUNTS: granted=true
+      android.permission.SYSTEM_ALERT_WINDOW: granted=true
+      android.permission.CLEAR_APP_USER_DATA: granted=true
+      android.permission.INSTALL_PACKAGES: granted=true
+      android.permission.SHUTDOWN: granted=true
+      android.permission.CHANGE_COMPONENT_ENABLED_STATE: granted=true
+      android.permission.NFC: granted=true
+      android.permission.CHANGE_NETWORK_STATE: granted=true
+      android.permission.MASTER_CLEAR: granted=true
+      android.permission.WRITE_SYNC_SETTINGS: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      android.permission.DEVICE_POWER: granted=true
+      android.permission.SET_TIME_ZONE: granted=true
+      android.permission.REMOVE_TASKS: granted=true
+      android.permission.EXPAND_STATUS_BAR: granted=true
+      com.android.launcher.permission.UNINSTALL_SHORTCUT: granted=true
+      android.permission.READ_PROFILE: granted=true
+      android.permission.BLUETOOTH: granted=true
+      android.permission.WRITE_MEDIA_STORAGE: granted=true
+      android.permission.GET_TASKS: granted=true
+      android.permission.ACCESS_SURFACE_FLINGER: granted=true
+      android.permission.AUTHENTICATE_ACCOUNTS: granted=true
+      android.permission.INTERNET: granted=true
+      android.permission.BLUETOOTH_ADMIN: granted=true
+      android.permission.GET_PACKAGE_SIZE: granted=true
+      android.permission.MANAGE_USB: granted=true
+      android.permission.INTERACT_ACROSS_USERS_FULL: granted=true
+      android.permission.BATTERY_STATS: granted=true
+      android.permission.PACKAGE_USAGE_STATS: granted=true
+      android.permission.MOUNT_UNMOUNT_FILESYSTEMS: granted=true
+      android.permission.WRITE_SECURE_SETTINGS: granted=true
+      android.permission.READ_PRIVILEGED_PHONE_STATE: granted=true
+      android.permission.BROADCAST_STICKY: granted=true
+      android.permission.ACCESS_KEYGUARD_SECURE_STORAGE: granted=true
+      android.permission.SET_TIME: granted=true
+      android.permission.WRITE_APN_SETTINGS: granted=true
+      android.permission.CHANGE_WIFI_STATE: granted=true
+      android.permission.MANAGE_USERS: granted=true
+      android.permission.SET_PREFERRED_APPLICATIONS: granted=true
+      android.permission.FLASHLIGHT: granted=true
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+      android.permission.BACKUP: granted=true
+      android.permission.CHANGE_CONFIGURATION: granted=true
+      android.permission.LOCAL_MAC_ADDRESS: granted=true
+      android.permission.READ_LOGS: granted=true
+      android.permission.SET_WALLPAPER: granted=true
+      android.permission.READ_NETWORK_USAGE_HISTORY: granted=true
+      android.permission.KILL_BACKGROUND_PROCESSES: granted=true
+      android.permission.READ_SYNC_STATS: granted=true
+      android.permission.REBOOT: granted=true
+      android.permission.MOUNT_FORMAT_FILESYSTEMS: granted=true
+      android.permission.MANAGE_DEVICE_ADMINS: granted=true
+      net.soti.mobicontrol.peoplenet.permission.C2D_MESSAGE: granted=true
+      android.permission.MANAGE_NETWORK_POLICY: granted=true
+      android.permission.CHANGE_BACKGROUND_DATA_SETTING: granted=true
+      android.permission.CONNECTIVITY_INTERNAL: granted=true
+      android.permission.READ_SYNC_SETTINGS: granted=true
+      android.permission.OVERRIDE_WIFI_CONFIG: granted=true
+      android.permission.FORCE_STOP_PACKAGES: granted=true
+      android.permission.VIBRATE: granted=true
+      android.permission.MODIFY_NETWORK_ACCOUNTING: granted=true
+      android.permission.CRYPT_KEEPER: granted=true
+      android.permission.ACCESS_WIFI_STATE: granted=true
+      android.permission.REQUEST_INSTALL_PACKAGES: granted=true
+      android.permission.MODIFY_PHONE_STATE: granted=true
+      com.android.launcher.permission.INSTALL_SHORTCUT: granted=true
+      android.permission.STATUS_BAR: granted=true
+      android.permission.READ_FRAME_BUFFER: granted=true
+      net.soti.mobicontrol.peoplenet.permission.RECEIVE_ALARMS: granted=true
+      android.permission.WAKE_LOCK: granted=true
+      android.permission.INJECT_EVENTS: granted=true
+      android.permission.UPDATE_APP_OPS_STATS: granted=true
+      android.permission.DELETE_PACKAGES: granted=true
+    User 0: ceDataInode=427532 installed=true hidden=false suspended=false stopped=false notLaunched=false enabled=0
+      enabledComponents:
+        net.soti.mobicontrol.lockdown.kiosk.KioskActivity
+
+Shared users:
+  SharedUser [net.soti.mobicontrol.peoplenet.shared] (3b85349):
+    userId=10078
+    install permissions:
+      android.permission.REAL_GET_TASKS: granted=true
+      android.permission.DOWNLOAD_WITHOUT_NOTIFICATION: granted=true
+      android.permission.WRITE_SETTINGS: granted=true
+      com.google.android.c2dm.permission.RECEIVE: granted=true
+      android.permission.RESTART_PACKAGES: granted=true
+      android.permission.BIND_DEVICE_ADMIN: granted=true
+      android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+      android.permission.GET_APP_OPS_STATS: granted=true
+      com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+      android.permission.MANAGE_ACCOUNTS: granted=true
+      android.permission.SYSTEM_ALERT_WINDOW: granted=true
+      android.permission.CLEAR_APP_USER_DATA: granted=true
+      android.permission.INSTALL_PACKAGES: granted=true
+      android.permission.SHUTDOWN: granted=true
+      android.permission.CHANGE_COMPONENT_ENABLED_STATE: granted=true
+      android.permission.NFC: granted=true
+      android.permission.CHANGE_NETWORK_STATE: granted=true
+      android.permission.MASTER_CLEAR: granted=true
+      android.permission.WRITE_SYNC_SETTINGS: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      android.permission.DEVICE_POWER: granted=true
+      android.permission.SET_TIME_ZONE: granted=true
+      android.permission.REMOVE_TASKS: granted=true
+      android.permission.EXPAND_STATUS_BAR: granted=true
+      com.android.launcher.permission.UNINSTALL_SHORTCUT: granted=true
+      android.permission.READ_PROFILE: granted=true
+      android.permission.BLUETOOTH: granted=true
+      android.permission.WRITE_MEDIA_STORAGE: granted=true
+      android.permission.GET_TASKS: granted=true
+      android.permission.ACCESS_SURFACE_FLINGER: granted=true
+      android.permission.AUTHENTICATE_ACCOUNTS: granted=true
+      android.permission.INTERNET: granted=true
+      android.permission.BLUETOOTH_ADMIN: granted=true
+      android.permission.GET_PACKAGE_SIZE: granted=true
+      android.permission.MANAGE_USB: granted=true
+      android.permission.INTERACT_ACROSS_USERS_FULL: granted=true
+      android.permission.BATTERY_STATS: granted=true
+      android.permission.PACKAGE_USAGE_STATS: granted=true
+      android.permission.MOUNT_UNMOUNT_FILESYSTEMS: granted=true
+      android.permission.WRITE_SECURE_SETTINGS: granted=true
+      android.permission.READ_PRIVILEGED_PHONE_STATE: granted=true
+      android.permission.BROADCAST_STICKY: granted=true
+      android.permission.ACCESS_KEYGUARD_SECURE_STORAGE: granted=true
+      android.permission.SET_TIME: granted=true
+      android.permission.WRITE_APN_SETTINGS: granted=true
+      android.permission.CHANGE_WIFI_STATE: granted=true
+      android.permission.MANAGE_USERS: granted=true
+      android.permission.SET_PREFERRED_APPLICATIONS: granted=true
+      android.permission.FLASHLIGHT: granted=true
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+      android.permission.BACKUP: granted=true
+      android.permission.CHANGE_CONFIGURATION: granted=true
+      android.permission.LOCAL_MAC_ADDRESS: granted=true
+      android.permission.READ_LOGS: granted=true
+      android.permission.SET_WALLPAPER: granted=true
+      android.permission.READ_NETWORK_USAGE_HISTORY: granted=true
+      android.permission.KILL_BACKGROUND_PROCESSES: granted=true
+      android.permission.READ_SYNC_STATS: granted=true
+      android.permission.REBOOT: granted=true
+      android.permission.MOUNT_FORMAT_FILESYSTEMS: granted=true
+      android.permission.MANAGE_DEVICE_ADMINS: granted=true
+      net.soti.mobicontrol.peoplenet.permission.C2D_MESSAGE: granted=true
+      android.permission.MANAGE_NETWORK_POLICY: granted=true
+      android.permission.CHANGE_BACKGROUND_DATA_SETTING: granted=true
+      android.permission.CONNECTIVITY_INTERNAL: granted=true
+      android.permission.READ_SYNC_SETTINGS: granted=true
+      android.permission.OVERRIDE_WIFI_CONFIG: granted=true
+      android.permission.FORCE_STOP_PACKAGES: granted=true
+      android.permission.VIBRATE: granted=true
+      android.permission.MODIFY_NETWORK_ACCOUNTING: granted=true
+      android.permission.CRYPT_KEEPER: granted=true
+      android.permission.ACCESS_WIFI_STATE: granted=true
+      android.permission.REQUEST_INSTALL_PACKAGES: granted=true
+      android.permission.MODIFY_PHONE_STATE: granted=true
+      com.android.launcher.permission.INSTALL_SHORTCUT: granted=true
+      android.permission.STATUS_BAR: granted=true
+      android.permission.READ_FRAME_BUFFER: granted=true
+      net.soti.mobicontrol.peoplenet.permission.RECEIVE_ALARMS: granted=true
+      android.permission.WAKE_LOCK: granted=true
+      android.permission.INJECT_EVENTS: granted=true
+      android.permission.UPDATE_APP_OPS_STATS: granted=true
+      android.permission.DELETE_PACKAGES: granted=true
+    User 0: 
+      gids=[3002, 1023, 1015, 3003, 3001, 1007, 3006, 3007]
+      runtime permissions:
+        android.permission.READ_CALL_LOG: granted=true
+        android.permission.ACCESS_FINE_LOCATION: granted=true
+        android.permission.READ_EXTERNAL_STORAGE: granted=true
+        android.permission.READ_PHONE_STATE: granted=true
+        android.permission.CALL_PHONE: granted=true
+        android.permission.CAMERA: granted=true
+        android.permission.PROCESS_OUTGOING_CALLS: granted=true
+        android.permission.GET_ACCOUNTS: granted=true
+        android.permission.WRITE_EXTERNAL_STORAGE: granted=true
+        android.permission.RECORD_AUDIO: granted=true
+        android.permission.READ_CONTACTS: granted=true
+
+
+Dexopt state:
+  [net.soti.mobicontrol.peoplenet]
+    Instruction Set: arm
+      path: /data/app/net.soti.mobicontrol.peoplenet-2/base.apk
+      status: /data/app/net.soti.mobicontrol.peoplenet-2/oat/arm/base.odex [compilation_filter=verify-at-runtime, status
+      =kOatUpToDate]
+
+
+Compiler stats:
+  [net.soti.mobicontrol.peoplenet]
+     base.apk - 18111
+root@PD5:/ # 
